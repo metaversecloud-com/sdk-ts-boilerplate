@@ -1,6 +1,6 @@
-# Jukebox
+# SDK TypeScript Boilerplate
 
-Jukebox app built on Topia's SDK.
+Boilerplate for apps built on Topia's SDK.
 
 ## Getting Started
 

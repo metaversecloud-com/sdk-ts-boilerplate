@@ -5,6 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.tsx";
 import GlobalProvider from "./context/GlobalProvider.tsx";
 
+import "./index.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GlobalProvider>
     <BrowserRouter>

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import router from "./routes.js";
+import { cleanReturnPayload } from "./utils/cleanReturnPayload.js";
 dotenv.config({ path: "../.env"});
 
 function checkEnvVariables() {

@@ -6,10 +6,16 @@
   "type": "module",
   "main": "./server/index.js",
   "scripts": {
-    "build": "cd client && npm run build",
+    "build": "npm run build -w client",
+    "build-dev": "npm run build",
+    "link-sdk": "yalc link @rtsdk/topia",
+    "unlink-sdk": "yalc remove @rtsdk/topia",
+    "server": "node server/index.js",
+    "client": "npm start --prefix client",
+    "start": "npm start -ws",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "cd server && nodemon index.js",
-    "dev-client": "cd client && npm run dev"
+    "dev-client": "cd client && npm run start"
   },
   "dependencies": {
     "@rtsdk/topia": "^0.8.5",
@@ -22,5 +28,9 @@
   "license": "ISC",
   "devDependencies": {
     "prettier": "3.2.5"
-  }
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
 }

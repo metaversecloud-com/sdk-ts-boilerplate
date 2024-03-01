@@ -1,4 +1,4 @@
-import { DroppedAsset, errorHandler } from "../index.js";
+import { DroppedAsset, errorHandler } from "../index.ts"
 
 export const getDroppedAsset = async (credentials) => {
   try {

@@ -1,4 +1,4 @@
-import { getVisitor, errorHandler } from "../../utils/index.js";
+import { getVisitor, errorHandler } from "../../utils/index.ts"
 
 export const openIframe = async (req, res) => {
   try {

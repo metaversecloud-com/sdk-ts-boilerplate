@@ -1,4 +1,4 @@
-import { Asset, DroppedAsset, errorHandler } from "../../utils/index.js";
+import { Asset, DroppedAsset, errorHandler } from "../../utils/index.ts"
 
 export const handleDropAsset = async (req, res) => {
   try {

@@ -7,26 +7,26 @@
   "main": "./server/index.js",
   "scripts": {
     "build": "npm run build -w client",
-    "build-dev": "npm run build",
     "link-sdk": "yalc link @rtsdk/topia",
     "unlink-sdk": "yalc remove @rtsdk/topia",
-    "server": "node server/index.js",
+    "server": "npm run start --prefix server",
     "client": "npm start --prefix client",
-    "start": "npm start -ws",
+    "start": "npm start --workspace=server",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
-    "dev-server": "cd server && nodemon index.js",
-    "dev-client": "cd client && npm run start"
+    "dev-server": "npm run dev --prefix server",
+    "dev-client": "npm run start --prefix client"
   },
   "dependencies": {
     "@rtsdk/topia": "^0.8.5",
+    "axios": "^1.6.7",
     "concurrently": "^8.2.2",
-    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.18.2",
     "yalc": "^1.0.0-pre.53"
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/cors": "^2.8.17",
     "prettier": "3.2.5"
   },
   "workspaces": [

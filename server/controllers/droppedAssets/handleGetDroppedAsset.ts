@@ -1,4 +1,4 @@
-import { errorHandler, getDroppedAsset, initializeDroppedAssetDataObject } from "../../utils/index.js";
+import { errorHandler, getDroppedAsset, initializeDroppedAssetDataObject } from "../../utils/index.ts"
 
 export const handleGetDroppedAsset = async (req, res) => {
   try {

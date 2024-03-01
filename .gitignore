@@ -24,3 +24,6 @@ build-ssr
 *.sw?
 
 .env
+
+# custom
+server/dist

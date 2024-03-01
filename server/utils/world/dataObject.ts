@@ -1,5 +1,5 @@
-import { World } from "../topiaInit.js";
-import { errorHandler } from "../errorHandler.js";
+import { World } from "../topiaInit.ts"
+import { errorHandler } from "../errorHandler.ts"
 
 export const addProfileToWorldDataObject = async (credentials) => {
   try {

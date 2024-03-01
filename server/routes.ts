@@ -8,8 +8,8 @@ import {
   handleUpdateWorldDataObject,
   moveVisitor,
   handleRemoveDroppedAssets,
-} from "./controllers/index.js";
-import { getVersion } from "./utils/getVersion.js";
+} from "./controllers/index.ts"
+import { getVersion } from "./utils/getVersion.ts"
 
 const router = express.Router();
 

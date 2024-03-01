@@ -1,4 +1,4 @@
-import { World, errorHandler } from "../../utils/index.js";
+import { World, errorHandler } from "../../utils/index.ts"
 
 export const handleGetDroppedAssetsWithUniqueName = async (req, res) => {
   try {

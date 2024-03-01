@@ -1,5 +1,5 @@
-import { errorHandler } from "../errorHandler.js";
-import { getVisitor } from "./getVisitor.js";
+import { errorHandler } from "../errorHandler.ts"
+import { getVisitor } from "./getVisitor.ts"
 
 export const updateLastVisited = async (credentials) => {
   try {

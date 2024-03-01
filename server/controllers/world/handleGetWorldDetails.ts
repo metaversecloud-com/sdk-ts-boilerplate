@@ -1,4 +1,4 @@
-import { World, errorHandler } from "../../utils/index.js";
+import { World, errorHandler } from "../../utils/index.ts"
 
 export const handleGetWorldDetails = async (req, res) => {
   try {

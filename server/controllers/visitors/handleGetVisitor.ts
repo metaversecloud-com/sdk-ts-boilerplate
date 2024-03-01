@@ -1,4 +1,4 @@
-import { errorHandler, getVisitor } from "../../utils/index.js";
+import { errorHandler, getVisitor } from "../../utils/index.ts"
 
 export const handleGetVisitor = async (req, res) => {
   try {

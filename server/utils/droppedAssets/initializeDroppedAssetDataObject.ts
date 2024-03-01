@@ -1,4 +1,4 @@
-import { errorHandler } from "../index.js";
+import { errorHandler } from "../index.ts"
 
 export const initializeDroppedAssetDataObject = async (deleteDroppedAsset) => {
   try {

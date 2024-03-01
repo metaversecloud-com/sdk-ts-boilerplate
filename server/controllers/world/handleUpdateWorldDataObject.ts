@@ -1,4 +1,4 @@
-import { addProfileToWorldDataObject, errorHandler } from "../../utils/index.js";
+import { addProfileToWorldDataObject, errorHandler } from "../../utils/index.ts"
 
 export const handleUpdateWorldDataObject = async (req, res) => {
   try {

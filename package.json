@@ -11,7 +11,7 @@
     "unlink-sdk": "yalc remove @rtsdk/topia",
     "server": "npm run start --prefix server",
     "client": "npm start --prefix client",
-    "start": "npm start --workspace=server",
+    "start": "npm start -w server",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "npm run dev --prefix server",
     "dev-client": "npm run start --prefix client"

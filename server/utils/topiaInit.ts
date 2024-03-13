@@ -10,7 +10,6 @@ const config = {
   interactiveKey: process.env.INTERACTIVE_KEY,
   interactiveSecret: process.env.INTERACTIVE_SECRET,
 };
-console.log("🚀 ~ file: topiaInit.ts:13 ~ config:", config)
 
 const myTopiaInstance = new Topia(config);
 

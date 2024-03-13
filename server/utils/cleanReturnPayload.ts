@@ -1,7 +1,6 @@
 const keys = ["topia", "credentials", "jwt", "requestOptions"];
 
 export const cleanReturnPayload = (payload: any) => {
-  console.log("🚀 ~ file: cleanReturnPayload.ts:4 ~ payload:", payload)
   const keyExists = (payload: any) => {
     if (!payload || (typeof payload !== "object" && !Array.isArray(payload))) return payload;
 
@@ -22,7 +21,6 @@ export const cleanReturnPayload = (payload: any) => {
       }
     }
 
-    console.log("🚀 ~ file: cleanReturnPayload.ts:26 ~ payload:", payload)
     return payload;
   };
   keyExists(payload);

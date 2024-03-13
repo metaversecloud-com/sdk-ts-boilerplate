@@ -1,9 +1,13 @@
 import { useContext, useState } from "react";
+
+// context
 import { GlobalStateContext } from "@/context/GlobalContext";
+
+// utils
 import { backendAPI } from "@/utils/backendAPI";
 
 const Home = () => {
-  const [droppedAsset, setDroppedAsset] = useState();
+  const [droppedAsset, setDroppedAsset] = useState({ assetName: "", bottomLayerURL: "", id: null, topLayerURL: null });
 
   const { hasInteractiveParams } = useContext(GlobalStateContext);
 
@@ -38,7 +42,7 @@ const Home = () => {
         <button onClick={handleGetDroppedAsset}>
           Get Dropped Asset Details
         </button>
-        {droppedAsset && (
+        {droppedAsset.id && (
           <div className="flex flex-col w-full items-start">
             <p className="mt-4 mb-2">
               You have successfully retrieved the dropped asset details for {droppedAsset.assetName}!

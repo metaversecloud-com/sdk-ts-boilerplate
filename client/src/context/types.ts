@@ -1,7 +1,7 @@
 export const SET_INTERACTIVE_PARAMS = "SET_INTERACTIVE_PARAMS";
 
 export type InteractiveParams = {
-  assetId: string | null;
+  assetId: string;
   displayName: string;
   interactiveNonce: string;
   interactivePublicKey: string;

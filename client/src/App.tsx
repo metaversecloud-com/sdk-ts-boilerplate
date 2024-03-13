@@ -1,11 +1,16 @@
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useSearchParams } from "react-router-dom";
 
+// pages
 import Home from "@pages/Home";
 import Error from "@pages/Error";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+
+// context
 import { GlobalDispatchContext } from "./context/GlobalContext";
-import { setupBackendAPI } from "./utils/backendAPI";
 import { InteractiveParams, SET_INTERACTIVE_PARAMS } from "./context/types";
+
+// utils
+import { setupBackendAPI } from "./utils/backendAPI";
 
 const App = () => {
   const [searchParams] = useSearchParams();
@@ -13,18 +18,18 @@ const App = () => {
 
   const dispatch = useContext(GlobalDispatchContext);
 
-  const interactiveParams = useMemo(() => {
+  const interactiveParams: InteractiveParams = useMemo(() => {
     return {
-      assetId: searchParams.get("assetId"),
-      displayName: searchParams.get("displayName"),
-      interactiveNonce: searchParams.get("interactiveNonce"),
-      interactivePublicKey: searchParams.get("interactivePublicKey"),
-      profileId: searchParams.get("profileId"),
-      sceneDropId: searchParams.get("sceneDropId"),
-      uniqueName: searchParams.get("uniqueName"),
-      urlSlug: searchParams.get("urlSlug"),
-      username: searchParams.get("username"),
-      visitorId: searchParams.get("visitorId"),
+      assetId: searchParams.get("assetId") || "",
+      displayName: searchParams.get("displayName") || "",
+      interactiveNonce: searchParams.get("interactiveNonce") || "",
+      interactivePublicKey: searchParams.get("interactivePublicKey") || "",
+      profileId: searchParams.get("profileId") || "",
+      sceneDropId: searchParams.get("sceneDropId") || "",
+      uniqueName: searchParams.get("uniqueName") || "",
+      urlSlug: searchParams.get("urlSlug") || "",
+      username: searchParams.get("username") || "",
+      visitorId: searchParams.get("visitorId") || "",
     };
   }, [searchParams]);
 
@@ -64,8 +69,6 @@ const App = () => {
 
   useEffect(() => {
     if (interactiveParams.assetId) {
-      // TODO: Remove ts-ignore
-      // @ts-ignore
       setInteractiveParams({
         ...interactiveParams,
       });

@@ -1,7 +1,8 @@
 const keys = ["topia", "credentials", "jwt", "requestOptions"];
 
-export const cleanReturnPayload = (payload) => {
-  const keyExists = (payload) => {
+export const cleanReturnPayload = (payload: any) => {
+  console.log("🚀 ~ file: cleanReturnPayload.ts:4 ~ payload:", payload)
+  const keyExists = (payload: any) => {
     if (!payload || (typeof payload !== "object" && !Array.isArray(payload))) return payload;
 
     for (const i in keys) {
@@ -10,17 +11,18 @@ export const cleanReturnPayload = (payload) => {
         delete payload[key];
       } else if (Array.isArray(payload)) {
         for (let i = 0; i < payload.length; i++) {
-          const result = keyExists(payload[i], key);
+          const result = keyExists(payload[i]);
           if (result) delete payload[i][key];
         }
       } else {
         for (const k in payload) {
-          const result = keyExists(payload[k], key);
+          const result = keyExists(payload[k]);
           if (result) delete payload[k][key];
         }
       }
     }
 
+    console.log("🚀 ~ file: cleanReturnPayload.ts:26 ~ payload:", payload)
     return payload;
   };
   keyExists(payload);

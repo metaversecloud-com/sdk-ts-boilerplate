@@ -1,8 +1,11 @@
-import { errorHandler, getVisitor } from "../../utils/index.ts"
+import { errorHandler, getVisitor, getCredentials } from "../../utils"
+import { Request, Response } from "express";
 
-export const handleGetVisitor = async (req, res) => {
+export const handleGetVisitor = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {
-    const visitor = await getVisitor(req.query);
+    const credentials = getCredentials(req.query);
+    const visitor= await getVisitor(credentials);
+
     return res.json({ visitor, success: true });
   } catch (error) {
     return errorHandler({ error, functionName: "handleGetVisitor", message: "Error getting visitor", req, res });

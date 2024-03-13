@@ -1,24 +1,25 @@
-import { Asset, DroppedAsset, errorHandler } from "../../utils/index.ts"
+import { Request, Response } from "express";
+import { Asset, DroppedAsset, errorHandler,getCredentials } from "../../utils"
 
-export const handleDropAsset = async (req, res) => {
+export const handleDropAsset = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {
-    const { interactiveNonce, interactivePublicKey, urlSlug, visitorId } = req.query;
-    const { assetId, isInteractive, position, uniqueName } = req.body;
+    const {
+      assetId,
+      isInteractive,
+      position,
+      uniqueName,
+    }: { assetId: string; isInteractive: boolean; position: { x: number; y: number }; uniqueName: string } = req.body;
 
-    const asset = Asset.create(assetId, {
-      credentials: {
-        interactiveNonce,
-        interactivePublicKey,
-        visitorId,
-      },
-    });
+    const credentials = getCredentials(req.query);
+
+    const asset = Asset.create(assetId, { credentials });
 
     const droppedAsset = await DroppedAsset.drop(asset, {
       isInteractive,
       interactivePublicKey: process.env.INTERACTIVE_KEY,
-      position: position || { x: 0, y: 0 },
+      position,
       uniqueName,
-      urlSlug,
+      urlSlug: credentials.urlSlug,
     });
 
     return res.json({ droppedAsset, success: true });

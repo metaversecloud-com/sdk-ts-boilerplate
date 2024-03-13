@@ -1,20 +1,20 @@
-// TODO - Remove ts-nocheck and fix types
-// @ts-nocheck
 import axios from "axios";
+import { InteractiveParams } from '../context/types';
 
 const BASE_URL = import.meta.env.VITE_API_URL as string || "http://localhost:3000";
 let backendAPI = axios;
 
-const setupBackendAPI = (interactiveParams) => {
+const setupBackendAPI = (interactiveParams: InteractiveParams) => {
   backendAPI = axios.create({
     baseURL: `${BASE_URL}/api`,
     headers: {
       "Content-Type": "application/json",
     },
   });
+
   // Only do this if have interactive nonce.
   if (interactiveParams.assetId) {
-    backendAPI.interceptors.request.use((config) => {
+    backendAPI.interceptors.request.use((config: any) => {
       if (!config?.params) config.params = {};
       config.params = { ...config.params };
       config.params["assetId"] = interactiveParams.assetId;

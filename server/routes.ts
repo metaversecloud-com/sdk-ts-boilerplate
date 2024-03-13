@@ -1,15 +1,13 @@
 import express from "express";
 import {
   handleDropAsset,
-  handleGetDroppedAssetsWithUniqueName,
-  handleGetWorldDetails,
   handleGetDroppedAsset,
   handleGetVisitor,
+  handleRemoveDroppedAssetsByUniqueName,
+  handleGetWorldDetails,
   handleUpdateWorldDataObject,
-  moveVisitor,
-  handleRemoveDroppedAssets,
-} from "./controllers/index.ts"
-import { getVersion } from "./utils/getVersion.ts"
+} from "./controllers"
+import { getVersion } from "./utils/getVersion"
 
 const router = express.Router();
 
@@ -25,14 +23,12 @@ router.get("/system/health", (req, res) => {
 });
 
 // Dropped Assets
-router.get("/dropped-asset-with-unique-name", handleGetDroppedAssetsWithUniqueName);
 router.post("/dropped-asset", handleDropAsset);
 router.get("/dropped-asset", handleGetDroppedAsset);
-router.delete("/dropped-asset", handleRemoveDroppedAssets);
+router.post("/remove-dropped-assets", handleRemoveDroppedAssetsByUniqueName);
 
 // Visitor
 router.get("/visitor", handleGetVisitor);
-router.put("/visitor/move", moveVisitor);
 
 // World
 router.get("/world", handleGetWorldDetails);

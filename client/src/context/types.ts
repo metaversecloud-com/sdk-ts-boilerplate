@@ -15,8 +15,6 @@ export type InteractiveParams = {
 
 export interface InitialState {
   hasInteractiveParams: boolean;
-  selectedWorld: { [key: string]: any };
-  urlSlug: string;
 }
 
 export type ActionType = {

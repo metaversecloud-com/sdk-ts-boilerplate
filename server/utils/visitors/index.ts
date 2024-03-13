@@ -1,2 +1,1 @@
-export * from "./dataObject.ts"
-export * from "./getVisitor.ts"
+export * from "./getVisitor"

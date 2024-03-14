@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { Route, Routes, useSearchParams } from "react-router-dom";
+import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 
 // pages
 import Home from "@pages/Home";
@@ -7,12 +7,13 @@ import Error from "@pages/Error";
 
 // context
 import { GlobalDispatchContext } from "./context/GlobalContext";
-import { InteractiveParams, SET_INTERACTIVE_PARAMS } from "./context/types";
+import { InteractiveParams, SET_HAS_SETUP_BACKEND, SET_INTERACTIVE_PARAMS } from "./context/types";
 
 // utils
 import { setupBackendAPI } from "./utils/backendAPI";
 
 const App = () => {
+    const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [hasInitBackendAPI, setHasInitBackendAPI] = useState(false);
 
@@ -67,6 +68,15 @@ const App = () => {
     [dispatch],
   );
 
+  const setHasSetupBackend = useCallback((success: boolean) => {
+      dispatch!({
+        type: SET_HAS_SETUP_BACKEND,
+        payload: { hasSetupBackend: success },
+      });
+    },
+    [dispatch],
+  );
+
   useEffect(() => {
     if (interactiveParams.assetId) {
       setInteractiveParams({
@@ -76,11 +86,15 @@ const App = () => {
   }, [interactiveParams, setInteractiveParams]);
 
   useEffect(() => {
-    if (!hasInitBackendAPI) {
-      setupBackendAPI(interactiveParams);
-      setHasInitBackendAPI(true);
-    }
+    if (!hasInitBackendAPI) setupBackend();
   }, [hasInitBackendAPI, interactiveParams]);
+
+  const setupBackend = async () =>{
+      const setupResult = await setupBackendAPI(interactiveParams);
+      setHasSetupBackend(setupResult.success);
+      if(!setupResult.success) navigate('*');
+      else setHasInitBackendAPI(true);
+  }
 
   return (
     <Routes>

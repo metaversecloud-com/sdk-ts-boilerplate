@@ -6,7 +6,7 @@ export const getCredentials = (query: any): Credentials => {
   if (missingFields.length > 0) {
     throw new Error(`Missing required body parameters: ${missingFields.join(", ")}`);
   }
-  
+
   return {
     assetId: query.assetId as string,
     interactiveNonce: query.interactiveNonce as string,

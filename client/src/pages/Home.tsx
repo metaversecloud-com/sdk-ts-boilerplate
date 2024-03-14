@@ -9,7 +9,7 @@ import { backendAPI } from "@/utils/backendAPI";
 const Home = () => {
   const [droppedAsset, setDroppedAsset] = useState({ assetName: "", bottomLayerURL: "", id: null, topLayerURL: null });
 
-  const { hasInteractiveParams } = useContext(GlobalStateContext);
+  const { hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
 
   const handleGetDroppedAsset = async () => {
     try {
@@ -21,6 +21,8 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  if(!hasSetupBackend) return <div />
 
   return (
     <div className="container p-6 flex items-center justify-start">

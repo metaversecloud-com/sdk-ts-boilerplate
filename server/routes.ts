@@ -6,6 +6,7 @@ import {
   handleRemoveDroppedAssetsByUniqueName,
   handleGetWorldDetails,
   handleUpdateWorldDataObject,
+  handleCheckInteractiveCredentials,
 } from "./controllers"
 import { getVersion } from "./utils/getVersion"
 
@@ -21,6 +22,8 @@ router.get("/system/health", (req, res) => {
     status: "OK",
   });
 });
+
+router.get("/system/interactive-credentials", handleCheckInteractiveCredentials);
 
 // Dropped Assets
 router.post("/dropped-asset", handleDropAsset);

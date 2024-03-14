@@ -1,3 +1,4 @@
+export const SET_HAS_SETUP_BACKEND = "SET_HAS_SETUP_BACKEND";
 export const SET_INTERACTIVE_PARAMS = "SET_INTERACTIVE_PARAMS";
 
 export type InteractiveParams = {
@@ -15,6 +16,7 @@ export type InteractiveParams = {
 
 export interface InitialState {
   hasInteractiveParams: boolean;
+  hasSetupBackend: boolean;
 }
 
 export type ActionType = {

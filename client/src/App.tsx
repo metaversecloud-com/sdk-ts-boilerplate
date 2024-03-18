@@ -13,7 +13,7 @@ import { InteractiveParams, SET_HAS_SETUP_BACKEND, SET_INTERACTIVE_PARAMS } from
 import { setupBackendAPI } from "./utils/backendAPI";
 
 const App = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [hasInitBackendAPI, setHasInitBackendAPI] = useState(false);
 
@@ -77,6 +77,13 @@ const App = () => {
     [dispatch],
   );
 
+  const setupBackend = async () =>{
+      const setupResult = await setupBackendAPI(interactiveParams);
+      setHasSetupBackend(setupResult.success);
+      if(!setupResult.success) navigate('*');
+      else setHasInitBackendAPI(true);
+  }
+
   useEffect(() => {
     if (interactiveParams.assetId) {
       setInteractiveParams({
@@ -89,12 +96,6 @@ const App = () => {
     if (!hasInitBackendAPI) setupBackend();
   }, [hasInitBackendAPI, interactiveParams]);
 
-  const setupBackend = async () =>{
-      const setupResult = await setupBackendAPI(interactiveParams);
-      setHasSetupBackend(setupResult.success);
-      if(!setupResult.success) navigate('*');
-      else setHasInitBackendAPI(true);
-  }
 
   return (
     <Routes>

@@ -1,11 +1,15 @@
+import { useContext, useState } from "react";
+
+// context
+import { GlobalStateContext } from "@/context/GlobalContext";
+
+// utils
 import { backendAPI } from "@/utils/backendAPI";
-import { Button, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
 
 const Home = () => {
-  const [droppedAsset, setDroppedAsset] = useState();
+  const [droppedAsset, setDroppedAsset] = useState({ assetName: "", bottomLayerURL: "", id: null, topLayerURL: null });
 
-  const hasInteractiveParams = null;
+  const { hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
 
   const handleGetDroppedAsset = async () => {
     try {
@@ -18,45 +22,42 @@ const Home = () => {
     }
   };
 
+  if(!hasSetupBackend) return <div />
+
   return (
-    <Grid container direction="column" justifyContent="space-around" p={10}>
-      <Grid item>
-        <Grid alignItems="center" container spacing={2}>
-          <Grid item xs={12}>
-            <Typography variant="h4">Server side example using interactive parameters</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            {!hasInteractiveParams ? (
-              <Typography>
-                Edit an asset in your world and open the Links page in the Modify Asset drawer and add a link to your
-                website or use &quot;http://localhost:3000&quot; for testing locally. You can also add assetId,
-                interactiveNonce, interactivePublicKey, urlSlug, and visitorId directly to the URL as search parameters
-                to use this feature.
-              </Typography>
-            ) : (
-              <Typography>Interactive parameters found, nice work!</Typography>
-            )}
-          </Grid>
-          <Grid item>
-            <Button onClick={handleGetDroppedAsset} variant="contained">
-              Get Dropped Asset Details
-            </Button>
-          </Grid>
-          {droppedAsset && (
-            <>
-              <Grid item pt={4} xs={12}>
-              <Typography>
-                You have successfully retrieved the dropped asset details for {droppedAsset.assetName}!
-              </Typography>
-            </Grid>
-            <Grid item m={4} xs={12}>
-              <img alt="preview" src={droppedAsset.topLayerURL || droppedAsset.bottomLayerURL} />
-            </Grid>
-            </>
+    <div className="container p-6 flex items-center justify-start">
+      <div className="flex flex-col">
+        <h1 className="h2">Server side example using interactive parameters</h1>
+        <div className="max-w-screen-lg">
+          {!hasInteractiveParams ? (
+            <p>
+              Edit an asset in your world and open the Links page in the Modify Asset drawer and add a link to your
+              website or use &quot;http://localhost:3000&quot; for testing locally. You can also add assetId,
+              interactiveNonce, interactivePublicKey, urlSlug, and visitorId directly to the URL as search parameters to
+              use this feature.
+            </p>
+          ) : (
+            <p className="my-4">Interactive parameters found, nice work!</p>
           )}
-        </Grid>
-      </Grid>
-    </Grid>
+        </div>
+
+        <button onClick={handleGetDroppedAsset}>
+          Get Dropped Asset Details
+        </button>
+        {droppedAsset.id && (
+          <div className="flex flex-col w-full items-start">
+            <p className="mt-4 mb-2">
+              You have successfully retrieved the dropped asset details for {droppedAsset.assetName}!
+            </p>
+            <img
+              className="w-96 h-96 object-cover rounded-2xl my-4"
+              alt="preview"
+              src={droppedAsset.topLayerURL || droppedAsset.bottomLayerURL}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

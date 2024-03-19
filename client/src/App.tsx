@@ -1,30 +1,36 @@
-import { Route, Routes, useSearchParams } from "react-router-dom";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 
+// pages
 import Home from "@pages/Home";
 import Error from "@pages/Error";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+
+// context
 import { GlobalDispatchContext } from "./context/GlobalContext";
+import { InteractiveParams, SET_HAS_SETUP_BACKEND, SET_INTERACTIVE_PARAMS } from "./context/types";
+
+// utils
 import { setupBackendAPI } from "./utils/backendAPI";
-import { InteractiveParams, SET_INTERACTIVE_PARAMS } from "./context/types";
 
 const App = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [hasInitBackendAPI, setHasInitBackendAPI] = useState(false);
 
   const dispatch = useContext(GlobalDispatchContext);
 
-  const interactiveParams = useMemo(() => {
+  const interactiveParams: InteractiveParams = useMemo(() => {
     return {
-      assetId: searchParams.get("assetId"),
-      displayName: searchParams.get("displayName"),
-      interactiveNonce: searchParams.get("interactiveNonce"),
-      interactivePublicKey: searchParams.get("interactivePublicKey"),
-      profileId: searchParams.get("profileId"),
-      sceneDropId: searchParams.get("sceneDropId"),
-      uniqueName: searchParams.get("uniqueName"),
-      urlSlug: searchParams.get("urlSlug"),
-      username: searchParams.get("username"),
-      visitorId: searchParams.get("visitorId"),
+      assetId: searchParams.get("assetId") || "",
+      displayName: searchParams.get("displayName") || "",
+      interactiveNonce: searchParams.get("interactiveNonce") || "",
+      interactivePublicKey: searchParams.get("interactivePublicKey") || "",
+      profileId: searchParams.get("profileId") || "",
+      sceneDropId: searchParams.get("sceneDropId") || "",
+      uniqueName: searchParams.get("uniqueName") || "",
+      urlSlug: searchParams.get("urlSlug") || "",
+      username: searchParams.get("username") || "",
+      visitorId: searchParams.get("visitorId") || "",
     };
   }, [searchParams]);
 
@@ -62,10 +68,24 @@ const App = () => {
     [dispatch],
   );
 
+  const setHasSetupBackend = useCallback((success: boolean) => {
+      dispatch!({
+        type: SET_HAS_SETUP_BACKEND,
+        payload: { hasSetupBackend: success },
+      });
+    },
+    [dispatch],
+  );
+
+  const setupBackend = async () =>{
+      const setupResult = await setupBackendAPI(interactiveParams);
+      setHasSetupBackend(setupResult.success);
+      if(!setupResult.success) navigate('*');
+      else setHasInitBackendAPI(true);
+  }
+
   useEffect(() => {
     if (interactiveParams.assetId) {
-      // TODO: Remove ts-ignore
-      // @ts-ignore
       setInteractiveParams({
         ...interactiveParams,
       });
@@ -73,11 +93,9 @@ const App = () => {
   }, [interactiveParams, setInteractiveParams]);
 
   useEffect(() => {
-    if (!hasInitBackendAPI) {
-      setupBackendAPI(interactiveParams);
-      setHasInitBackendAPI(true);
-    }
+    if (!hasInitBackendAPI) setupBackend();
   }, [hasInitBackendAPI, interactiveParams]);
+
 
   return (
     <Routes>

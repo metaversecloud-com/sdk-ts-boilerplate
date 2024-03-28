@@ -1,4 +1,16 @@
-export const errorHandler = ({ error, functionName, message, req, res }) => {
+export const errorHandler = ({
+  error,
+  functionName,
+  message,
+  req,
+  res,
+}: {
+  error: any;
+  functionName: string;
+  message: string;
+  req?: any;
+  res?: any;
+}) => {
   try {
     const reqQueryParams = req?.query;
     if (reqQueryParams?.interactiveNonce) delete reqQueryParams.interactiveNonce;
@@ -14,7 +26,7 @@ export const errorHandler = ({ error, functionName, message, req, res }) => {
           reqQueryParams,
           reqBody: req?.body,
         },
-        error,
+        error: JSON.stringify(error),
       }),
     );
 
@@ -22,7 +34,6 @@ export const errorHandler = ({ error, functionName, message, req, res }) => {
     return { error };
   } catch (e) {
     console.error("❌ Error printing the logs", e);
-    if (res) return res.status(500).send({ error: e, message, success: false });
-    return { e };
+    return res.status(500).send({ error: e, message, success: false });
   }
 };

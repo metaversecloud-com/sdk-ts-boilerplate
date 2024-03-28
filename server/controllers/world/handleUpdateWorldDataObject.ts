@@ -1,8 +1,12 @@
-import { addProfileToWorldDataObject, errorHandler } from "../../utils/index.ts"
+import { Request, Response } from "express";
+import { addProfileToWorldDataObject, errorHandler, getCredentials } from "../../utils"
 
-export const handleUpdateWorldDataObject = async (req, res) => {
+export const handleUpdateWorldDataObject = async (req: Request, res: Response) => {
   try {
-    const dataObject = await addProfileToWorldDataObject(req.query);
+    const credentials = getCredentials(req.query);
+
+    const dataObject = await addProfileToWorldDataObject(credentials);
+
     return res.json({ dataObject, success: true });
   } catch (error) {
     return errorHandler({

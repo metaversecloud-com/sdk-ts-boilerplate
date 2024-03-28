@@ -11,13 +11,13 @@
     "unlink-sdk": "yalc remove @rtsdk/topia",
     "server": "npm run start --prefix server",
     "client": "npm start --prefix client",
-    "start": "npm start -w server",
+    "start": "npm start --workspace=server",
     "dev": "concurrently \"npm run dev-server\" \"npm run dev-client\"",
     "dev-server": "npm run dev --prefix server",
     "dev-client": "npm run start --prefix client"
   },
   "dependencies": {
-    "@rtsdk/topia": "^0.8.5",
+    "@rtsdk/topia": "^0.9.1",
     "axios": "^1.6.7",
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",

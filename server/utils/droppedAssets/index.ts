@@ -1,2 +1,2 @@
-export * from "./getDroppedAsset.ts"
-export * from "./initializeDroppedAssetDataObject.ts"
+export * from "./getDroppedAsset"
+export * from "./initializeDroppedAssetDataObject"

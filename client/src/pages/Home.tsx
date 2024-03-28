@@ -1,11 +1,15 @@
+import { useContext, useState } from "react";
+
+// context
 import { GlobalStateContext } from "@/context/GlobalContext";
+
+// utils
 import { backendAPI } from "@/utils/backendAPI";
-import React, { useContext, useState } from "react";
 
 const Home = () => {
-  const [droppedAsset, setDroppedAsset] = useState();
+  const [droppedAsset, setDroppedAsset] = useState({ assetName: "", bottomLayerURL: "", id: null, topLayerURL: null });
 
-  const { hasInteractiveParams } = useContext(GlobalStateContext);
+  const { hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
 
   const handleGetDroppedAsset = async () => {
     try {
@@ -18,28 +22,31 @@ const Home = () => {
     }
   };
 
+  if(!hasSetupBackend) return <div />
+
   return (
-    <div className="container p-24 flex items-center justify-start">
+    <div className="container p-6 flex items-center justify-start">
       <div className="flex flex-col">
-        <h1 className="h2 font-semibold">Server side example using interactive parameters</h1>
+        <h1 className="h2">Server side example using interactive parameters</h1>
         <div className="max-w-screen-lg">
           {!hasInteractiveParams ? (
-            <p className="p1 my-4">
+            <p>
               Edit an asset in your world and open the Links page in the Modify Asset drawer and add a link to your
               website or use &quot;http://localhost:3000&quot; for testing locally. You can also add assetId,
               interactiveNonce, interactivePublicKey, urlSlug, and visitorId directly to the URL as search parameters to
               use this feature.
             </p>
           ) : (
-            <p className="p1 my-4">Interactive parameters found, nice work!</p>
+            <p className="my-4">Interactive parameters found, nice work!</p>
           )}
         </div>
-        <button className="btn w-fit" onClick={handleGetDroppedAsset}>
+
+        <button onClick={handleGetDroppedAsset}>
           Get Dropped Asset Details
         </button>
-        {droppedAsset && (
+        {droppedAsset.id && (
           <div className="flex flex-col w-full items-start">
-            <p className="p1 mt-4 mb-2">
+            <p className="mt-4 mb-2">
               You have successfully retrieved the dropped asset details for {droppedAsset.assetName}!
             </p>
             <img

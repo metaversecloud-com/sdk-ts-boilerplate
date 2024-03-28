@@ -1,16 +1,12 @@
-import { DroppedAsset, errorHandler } from "../index.ts"
+import { Credentials } from "../../types";
+import { errorHandler } from "../errorHandler";
+import { DroppedAsset } from "../topiaInit";
 
-export const getDroppedAsset = async (credentials) => {
+export const getDroppedAsset = async (credentials: Credentials) => {
   try {
-    const { assetId, interactivePublicKey, interactiveNonce, urlSlug, visitorId } = credentials;
+    const { assetId, urlSlug } = credentials;
 
-    const droppedAsset = await DroppedAsset.get(assetId, urlSlug, {
-      credentials: {
-        interactiveNonce,
-        interactivePublicKey,
-        visitorId,
-      },
-    });
+    const droppedAsset = await DroppedAsset.get(assetId, urlSlug, { credentials });
 
     if (!droppedAsset) throw "Dropped asset not found";
 

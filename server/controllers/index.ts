@@ -1,3 +1,4 @@
-export * from "./droppedAssets/index.ts"
-export * from "./visitors/index.ts"
-export * from "./world/index.ts"
+export * from "./droppedAssets"
+export * from "./visitors"
+export * from "./world"
+export * from "./handleCheckInteractiveCredentials"

@@ -1,7 +1,8 @@
+export const SET_HAS_SETUP_BACKEND = "SET_HAS_SETUP_BACKEND";
 export const SET_INTERACTIVE_PARAMS = "SET_INTERACTIVE_PARAMS";
 
 export type InteractiveParams = {
-  assetId: string | null;
+  assetId: string;
   displayName: string;
   interactiveNonce: string;
   interactivePublicKey: string;
@@ -15,8 +16,7 @@ export type InteractiveParams = {
 
 export interface InitialState {
   hasInteractiveParams: boolean;
-  selectedWorld: { [key: string]: any };
-  urlSlug: string;
+  hasSetupBackend: boolean;
 }
 
 export type ActionType = {

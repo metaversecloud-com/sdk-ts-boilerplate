@@ -1,1 +1,1 @@
-export * from "./dataObject.ts"
+export * from "./addProfileToWorldDataObject"

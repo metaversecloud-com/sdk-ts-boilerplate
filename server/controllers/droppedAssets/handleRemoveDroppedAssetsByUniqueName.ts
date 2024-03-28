@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { errorHandler, getCredentials, World } from "../../utils"
+import { errorHandler, getCredentials, World } from "../../utils/index.js"
 
 export const handleRemoveDroppedAssetsByUniqueName = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {

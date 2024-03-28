@@ -1,7 +1,8 @@
-import { errorHandler } from "../errorHandler.ts"
-import { getVisitor } from "./getVisitor.ts"
+import { Credentials } from "../../types/Credentials.js";
+import { errorHandler } from "../errorHandler.js"
+import { getVisitor } from "./getVisitor.js"
 
-export const updateLastVisited = async (credentials) => {
+export const updateLastVisited = async (credentials: Credentials) => {
   try {
     const visitor = await getVisitor(credentials);
     // Optionally pass in a lock object as third argument of type

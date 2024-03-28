@@ -1,6 +1,7 @@
-import { World, errorHandler } from "../../utils/index.ts"
+import { World, errorHandler } from "../../utils/index.js"
+import { Request, Response } from "express";
 
-export const handleGetDroppedAssetsWithUniqueName = async (req, res) => {
+export const handleGetDroppedAssetsWithUniqueName = async (req: Request, res: Response) => {
   try {
     const { interactivePublicKey, interactiveNonce, isPartial = true, uniqueName, urlSlug, visitorId } = req.query;
 

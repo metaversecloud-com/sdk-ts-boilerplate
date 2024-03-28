@@ -1,6 +1,6 @@
-import { Credentials } from "../../types";
-import { errorHandler } from "../errorHandler";
-import { DroppedAsset } from "../topiaInit";
+import { Credentials } from "../../types/index.js";
+import { errorHandler } from "../errorHandler.js";
+import { DroppedAsset } from "../topiaInit.js";
 
 export const getDroppedAsset = async (credentials: Credentials) => {
   try {

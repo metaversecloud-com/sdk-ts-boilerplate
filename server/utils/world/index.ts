@@ -1,1 +1,1 @@
-export * from "./addProfileToWorldDataObject"
+export * from "./addProfileToWorldDataObject.js"

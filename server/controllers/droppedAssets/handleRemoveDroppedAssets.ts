@@ -1,6 +1,7 @@
-import { errorHandler, getDroppedAsset } from "../../utils/index.ts"
+import { errorHandler, getDroppedAsset } from "../../utils/index.js"
+import { Request, Response } from "express";
 
-export const handleRemoveDroppedAssets = async (req, res) => {
+export const handleRemoveDroppedAssets = async (req: Request, res: Response) => {
   try {
     const droppedAsset = await getDroppedAsset(req.query);
 

@@ -1,6 +1,7 @@
-import { getVisitor, errorHandler } from "../../utils/index.ts"
+import { getVisitor, errorHandler } from "../../utils/index.js"
+import { Request, Response } from "express";
 
-export const openIframe = async (req, res) => {
+export const openIframe = async (req: Request, res: Response) => {
   try {
     const { link, shouldOpenInDrawer, title } = req.body;
 
@@ -19,7 +20,7 @@ export const openIframe = async (req, res) => {
   }
 };
 
-export const fireToast = async (req, res) => {
+export const fireToast = async (req: Request, res: Response) => {
   try {
     const { groupId, title, text } = req.body;
 
@@ -38,7 +39,7 @@ export const fireToast = async (req, res) => {
   }
 };
 
-export const moveVisitor = async (req, res) => {
+export const moveVisitor = async (req: Request, res: Response) => {
   try {
     const { moveTo, shouldTeleportVisitor } = req.body;
     const visitor = await getVisitor(req.query);

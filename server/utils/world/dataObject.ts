@@ -1,9 +1,10 @@
-import { World } from "../topiaInit.ts"
-import { errorHandler } from "../errorHandler.ts"
+import { World } from "../topiaInit.js"
+import { errorHandler } from "../errorHandler.js"
+import { Credentials } from "../../types/Credentials.js";
 
-export const addProfileToWorldDataObject = async (credentials) => {
+export const addProfileToWorldDataObject = async (credentials: Credentials) => {
   try {
-    const { assetId, urlSlug, username } = credentials;
+    const { assetId, urlSlug, username, profileId } = credentials;
 
     const world = World.create(urlSlug, { credentials });
 
@@ -20,7 +21,7 @@ export const addProfileToWorldDataObject = async (credentials) => {
   }
 };
 
-export const incrementWorldDataObjectValue = async (credentials, amount, path) => {
+export const incrementWorldDataObjectValue = async (credentials: Credentials, amount, path) => {
   try {
     const { urlSlug } = credentials;
 

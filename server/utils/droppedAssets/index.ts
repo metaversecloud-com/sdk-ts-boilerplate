@@ -1,2 +1,2 @@
-export * from "./getDroppedAsset"
-export * from "./initializeDroppedAssetDataObject"
+export * from "./getDroppedAsset.js"
+export * from "./initializeDroppedAssetDataObject.js"

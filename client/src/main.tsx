@@ -5,6 +5,8 @@ import GlobalProvider from "./context/GlobalProvider";
 import App from './App';
 import "./index.css";
 
+import "./index.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <GlobalProvider>
     <BrowserRouter>

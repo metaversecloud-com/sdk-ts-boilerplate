@@ -1,4 +1,4 @@
-import { Credentials } from "../types";
+import { Credentials } from "../types/index.js";
 
 export const getCredentials = (query: any): Credentials => {
   const requiredFields = ["interactiveNonce", "interactivePublicKey", "urlSlug", "visitorId"];

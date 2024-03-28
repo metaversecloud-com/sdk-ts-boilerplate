@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { World, errorHandler, getCredentials } from "../../utils";
+import { World, errorHandler, getCredentials } from "../../utils/index.js";
 
 export const handleGetWorldDetails = async (req: Request, res: Response) => {
   try {

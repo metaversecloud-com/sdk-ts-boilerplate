@@ -1,5 +1,5 @@
-import { IDroppedAsset } from "../../types/DroppedAssetInterface";
-import { errorHandler } from "../errorHandler"
+import { IDroppedAsset } from "../../types/DroppedAssetInterface.js";
+import { errorHandler } from "../errorHandler.js"
 
 export const initializeDroppedAssetDataObject = async (droppedAsset: IDroppedAsset) => {
   try {

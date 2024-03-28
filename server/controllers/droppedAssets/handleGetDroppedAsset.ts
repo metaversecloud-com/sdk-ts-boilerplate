@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { DroppedAsset, errorHandler, getCredentials, initializeDroppedAssetDataObject } from "../../utils";
-import { IDroppedAsset } from '../../types/DroppedAssetInterface';
+import { DroppedAsset, errorHandler, getCredentials, initializeDroppedAssetDataObject } from "../../utils/index.js";
+import { IDroppedAsset } from '../../types/DroppedAssetInterface.js';
 
 export const handleGetDroppedAsset = async (req: Request, res: Response) => {
   try {

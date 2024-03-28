@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Asset, DroppedAsset, errorHandler, getCredentials } from "../../utils"
+import { Asset, DroppedAsset, errorHandler, getCredentials } from "../../utils/index.js"
 
 export const handleDropAsset = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {

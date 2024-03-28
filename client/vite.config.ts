@@ -1,17 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import dotenv from 'dotenv'
-
-dotenv.config()
 // https://vitejs.dev/config/
 
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: process.env.VITE_PORT,
+    port: 3001,
     proxy: {
-      "/api": process.env.VITE_API_URL,
+      "/api": "http://localhost:3000/",
     },
   },
   build: {

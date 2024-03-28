@@ -41,7 +41,7 @@ const Home = () => {
           )}
         </div>
 
-        <button onClick={handleGetDroppedAsset}>
+        <button className="btn" onClick={handleGetDroppedAsset}>
           Get Dropped Asset Details
         </button>
         {droppedAsset.id && (

@@ -12,17 +12,12 @@ const Home = () => {
   const { hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
 
   const handleGetDroppedAsset = async () => {
-    try {
-      const result = await backendAPI.get("/dropped-asset");
-      if (result.data.success) {
-        setDroppedAsset(result.data.droppedAsset);
-      } else return console.log("Error getting data object");
-    } catch (error) {
-      console.log(error);
-    }
+    backendAPI.get("/dropped-asset")
+      .then((result) => setDroppedAsset(result.data.droppedAsset))
+      .catch((error) => console.error(error))
   };
 
-  if(!hasSetupBackend) return <div />
+  if (!hasSetupBackend) return <div />
 
   return (
     <div className="container p-6 flex items-center justify-start">

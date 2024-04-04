@@ -1,9 +1,11 @@
 export interface Credentials {
   assetId: string;
+  displayName: string;
   interactiveNonce: string;
   interactivePublicKey: string;
   profileId: string;
-  urlSlug: string;
+  sceneDropId: string;
   username: string;
+  urlSlug: string;
   visitorId: number;
 }

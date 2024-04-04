@@ -7,7 +7,6 @@ import {
   handleGetWorldDetails,
   handleUpdateWorldDataObject,
 } from "./controllers/index.js"
-import { checkInteractiveCredentials } from "./middleware/checkInteractiveCredentials.js";
 import { getVersion } from "./utils/getVersion.js"
 
 const router = express.Router();
@@ -30,15 +29,15 @@ router.get("/system/health", (req, res) => {
 });
 
 // Dropped Assets
-router.post("/dropped-asset", checkInteractiveCredentials, handleDropAsset);
-router.get("/dropped-asset", checkInteractiveCredentials, handleGetDroppedAsset);
-router.post("/remove-dropped-assets", checkInteractiveCredentials, handleRemoveDroppedAssetsByUniqueName);
+router.post("/dropped-asset", handleDropAsset);
+router.get("/dropped-asset", handleGetDroppedAsset);
+router.post("/remove-dropped-assets", handleRemoveDroppedAssetsByUniqueName);
 
 // Visitor
-router.get("/visitor", checkInteractiveCredentials, handleGetVisitor);
+router.get("/visitor", handleGetVisitor);
 
 // World
-router.get("/world", checkInteractiveCredentials, handleGetWorldDetails);
-router.put("/world/data-object", checkInteractiveCredentials, handleUpdateWorldDataObject);
+router.get("/world", handleGetWorldDetails);
+router.put("/world/data-object", handleUpdateWorldDataObject);
 
 export default router;

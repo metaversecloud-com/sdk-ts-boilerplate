@@ -6,8 +6,8 @@ import {
   handleRemoveDroppedAssetsByUniqueName,
   handleGetWorldDetails,
   handleUpdateWorldDataObject,
-} from "./controllers/index.js"
-import { getVersion } from "./utils/getVersion.js"
+} from "./controllers/index.js";
+import { getVersion } from "./utils/getVersion.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
-import { Visitor } from "../topiaInit.js"
-import { errorHandler } from "../errorHandler.js"
+import { Visitor } from "../topiaInit.js";
+import { errorHandler } from "../errorHandler.js";
 import { Credentials } from "../../types/Credentials.js";
 
 export const getVisitor = async (credentials: Credentials) => {
@@ -14,7 +14,7 @@ export const getVisitor = async (credentials: Credentials) => {
       },
     });
 
-    if (!visitor || !visitor.username) throw "Not in world";
+    if (!visitor) throw "Not in world";
 
     return visitor;
   } catch (error) {

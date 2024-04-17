@@ -12,7 +12,7 @@ export type InteractiveParams = {
   urlSlug: string;
   username: string;
   visitorId: string;
-}
+};
 
 export interface InitialState {
   hasInteractiveParams: boolean;
@@ -21,5 +21,5 @@ export interface InitialState {
 
 export type ActionType = {
   type: string;
-  payload?: any;
+  payload?: object;
 };

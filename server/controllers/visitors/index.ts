@@ -1,1 +1,1 @@
-export * from "./handleGetVisitor.js"
+export * from "./handleGetVisitor.js";

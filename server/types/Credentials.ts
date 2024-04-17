@@ -5,6 +5,7 @@ export interface Credentials {
   interactivePublicKey: string;
   profileId: string;
   sceneDropId: string;
+  uniqueName: string;
   username: string;
   urlSlug: string;
   visitorId: number;

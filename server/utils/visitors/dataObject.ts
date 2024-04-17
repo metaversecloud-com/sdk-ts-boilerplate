@@ -1,6 +1,6 @@
 import { Credentials } from "../../types/Credentials.js";
-import { errorHandler } from "../errorHandler.js"
-import { getVisitor } from "./getVisitor.js"
+import { errorHandler } from "../errorHandler.js";
+import { getVisitor } from "./getVisitor.js";
 
 export const updateLastVisited = async (credentials: Credentials) => {
   try {
@@ -18,7 +18,7 @@ export const updateLastVisited = async (credentials: Credentials) => {
   }
 };
 
-export const incrementVisitorDataObjectValue = async (credentials, amount, path) => {
+export const incrementVisitorDataObjectValue = async (credentials: Credentials, amount: number, path: string) => {
   try {
     const visitor = await getVisitor(credentials);
     await visitor.incrementDataObjectValue(path, amount);

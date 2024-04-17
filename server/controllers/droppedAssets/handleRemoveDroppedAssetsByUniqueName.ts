@@ -1,13 +1,16 @@
 import { Request, Response } from "express";
-import { errorHandler, getCredentials, World } from "../../utils/index.js"
+import { errorHandler, getCredentials, World } from "../../utils/index.js";
 
-export const handleRemoveDroppedAssetsByUniqueName = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
+export const handleRemoveDroppedAssetsByUniqueName = async (
+  req: Request,
+  res: Response,
+): Promise<Record<string, any> | void> => {
   try {
     const credentials = getCredentials(req.query);
-    const { assetId, interactivePublicKey, urlSlug } =  credentials
+    const { assetId, interactivePublicKey, urlSlug } = credentials;
 
-      let droppedAssetIds = [],
-        droppedAssets;
+    let droppedAssetIds = [],
+      droppedAssets;
 
     const world = World.create(urlSlug, { credentials });
     droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
@@ -24,8 +27,8 @@ export const handleRemoveDroppedAssetsByUniqueName = async (req: Request, res: R
         World.deleteDroppedAssets(urlSlug, droppedAssetIds, {
           interactivePublicKey,
           interactiveSecret: process.env.INTERACTIVE_SECRET,
-        })
-      )
+        }),
+      );
     }
 
     return res.json({ success: true });

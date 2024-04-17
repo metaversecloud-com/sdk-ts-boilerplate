@@ -1,1 +1,1 @@
-export * from "./getVisitor.js"
+export * from "./getVisitor.js";

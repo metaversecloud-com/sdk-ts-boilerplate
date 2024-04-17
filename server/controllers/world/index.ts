@@ -1,2 +1,2 @@
-export * from "./handleGetWorldDetails.js"
-export * from "./handleUpdateWorldDataObject.js"
+export * from "./handleGetWorldDetails.js";
+export * from "./handleUpdateWorldDataObject.js";

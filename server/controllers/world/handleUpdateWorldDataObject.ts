@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addProfileToWorldDataObject, errorHandler, getCredentials } from "../../utils/index.js"
+import { addProfileToWorldDataObject, errorHandler, getCredentials } from "../../utils/index.js";
 
 export const handleUpdateWorldDataObject = async (req: Request, res: Response) => {
   try {

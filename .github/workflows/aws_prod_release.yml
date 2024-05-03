@@ -1,15 +1,19 @@
 name: AWS-Build-Push-Prod
 on:
-  workflow_dispatch:
-    inputs:
-      version_number:
-        description: "Version number for the Docker image tag"
-        required: true
+  release:
+    types: [published]
+
 env:
-  REGISTRY: '368076259134.dkr.ecr.us-east-1.amazonaws.com'
   REPOSITORY: 'sdk-prod'
-  IMAGE_TAG: ${{ github.event.repository.name }}-${{ github.event.inputs.version_number }}
-              
+  ECS_Cluster: "topia-prod-sdk-apps"
+  ENV: "prod"
+  reponame: ${{ github.event.repository.name }}
+  repo_service_map: '{"sdk-race":"race","sdk-chess-game":"chess","jukebox":"jukebox","sdk-bulletin-board-app":"bboard","teams-notifier":"notify","sdk-scavenger-hunt":"svghunt","sdk-tictactoe":"tictactoe","sdk-checkers":"checkers","sdk-quest":"quest", "virtual-pet":"vpet","sdk-collaborative-puzzle":"puzzle","sdk-quiz":"quiz","sdk-topia-activity-apps":"act-apps"}'
+
+concurrency:
+  group: ${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+                
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read  # This is required for actions/checkout
@@ -17,37 +21,47 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
+
       - name: Checkout
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.version_number }}
-          
-      - name: 'change version'
-        uses: reedyuk/npm-version@1.1.1
-        with:
-          version: ${{ github.event.inputs.version_number }}
-          git-tag-version: 'false'
-        
+          ref: ${{ github.event.release.tag_name }}
               
-      - uses: actions/setup-node@v4.0.1
+      - name: get servicename
+        id: sername
+        run: |
+          service_value=${{ fromJSON(env.repo_service_map)[env.reponame] }}
+          if [[ -z "$service_value" ]]; then
+            echo "Service value from map is missing. Using repository name instead."
+            service_value=${{ github.event.repository.name }}
+          fi
+          echo "service=topia-${{ env.ENV }}-${service_value}0" >> "$GITHUB_OUTPUT"
+          echo "sService value: topia-${{ env.ENV }}-${service_value}0"
+                
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.10
           cache: 'npm'
+      - run: git config --global user.email devops@topia.io
+      - run: git config --global user.name Devops
+      - run: npm version --workspaces --include-workspace-root true ${{ github.event.release.tag_name }}
       - run: npm i
       - run: CI=false npm run build
-              
+                
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.0.0
-                
+                  
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4.0.1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::368076259134:role/github-actions-role
           aws-region: us-east-1
-                
+                  
       - name: Login to Amazon ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1.7.1
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: 'false'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -60,12 +74,31 @@ jobs:
         with:
           images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
           tags: |
-            type=raw,value=${{ github.event.repository.name }}-${{ github.event.inputs.version_number }}
+            type=raw,value=${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
 
-      - name: Build and  tag
+      - name: Image Metadata
+        id: metadata-latest
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
+          tags: |
+            type=raw,value=${{ github.event.repository.name }}-latest
+
+      - name: Build and version tag
         run: |
           docker build -t ${{ steps.metadata.outputs.tags }} .
-                
+          docker tag ${{ steps.metadata.outputs.tags }} ${{ steps.metadata-latest.outputs.tags }}
+                        
       - name: push docker image to Amazon ECR
         run: |
           docker push ${{ steps.metadata.outputs.tags }}
+          docker push ${{ steps.metadata-latest.outputs.tags }}
+                  
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::471112828260:role/github-actions-role
+          aws-region: us-east-1
+      - name: Publish
+        run: |
+          aws ecs update-service --service ${{ steps.sername.outputs.service }} --force-new-deployment --cluster ${{ env.ECS_Cluster }}

@@ -8,8 +8,7 @@ env:
   ECS_Cluster: "topia-prod-sdk-apps"
   ENV: "prod"
   reponame: ${{ github.event.repository.name }}
-  repo_service_map: '{"sdk-race":"race","sdk-chess-game":"chess","jukebox":"jukebox","sdk-bulletin-board-app":"bboard","teams-notifier":"notify","sdk-scavenger-hunt":"svghunt","sdk-tictactoe":"tictactoe","sdk-checkers":"checkers","sdk-quest":"quest", "virtual-pet":"vpet","sdk-collaborative-puzzle":"puzzle","sdk-quiz":"quiz","sdk-topia-activity-apps":"act-apps"}'
-
+  repo_service_map: '{"sdk-build-an-asset":["locker","snowman"],"sdk-race":["race"],"sdk-chess-game":["chess"],"jukebox":["jukebox"],"sdk-bulletin-board-app":["bboard"],"teams-notifier":[],"sdk-scavenger-hunt":["svghunt"],"sdk-tictactoe":["tictactoe"],"sdk-checkers":["checkers"],"sdk-quest":["quest"], "virtual-pet":["vpet"],"sdk-collaborative-puzzle":["puzzle"],"sdk-quiz":["quiz"],"sdk-topia-activity-apps":["act-apps"]}'
 concurrency:
   group: ${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -30,13 +29,18 @@ jobs:
       - name: get servicename
         id: sername
         run: |
-          service_value=${{ fromJSON(env.repo_service_map)[env.reponame] }}
+          service_value=$(jq -r ".\"$reponame\"" <<< "$repo_service_map")
+          echo "$(echo $service_value | jq )"
           if [[ -z "$service_value" ]]; then
             echo "Service value from map is missing. Using repository name instead."
-            service_value=${{ github.event.repository.name }}
+            echo "service=${{ github.event.repository.name }}" >> "$GITHUB_OUTPUT"
+          elif [[ -n "$service_value" && $(echo "$service_value" | jq 'length == 0') == "true" ]]; then
+              echo "The app has no service deployed"
+              echo "service=none" >> "$GITHUB_OUTPUT"
+          else
+            echo "service=$service_value" >> "$GITHUB_OUTPUT"
+            echo "Service value: $(echo $service_value | jq )"
           fi
-          echo "service=topia-${{ env.ENV }}-${service_value}0" >> "$GITHUB_OUTPUT"
-          echo "sService value: topia-${{ env.ENV }}-${service_value}0"
                 
       - uses: actions/setup-node@v4
         with:
@@ -86,7 +90,7 @@ jobs:
 
       - name: Build and version tag
         run: |
-          docker build --build-arg REF=${{ github.ref}} --build-arg COMMIT_HASH=${{ github.sha}} -t ${{ steps.metadata.outputs.tags }} .
+          docker build --build-arg REF=$${{ github.ref}} --build-arg COMMIT_HASH=$${{ github.sha}} -t ${{ steps.metadata.outputs.tags }} .
           docker tag ${{ steps.metadata.outputs.tags }} ${{ steps.metadata-latest.outputs.tags }}
                         
       - name: push docker image to Amazon ECR
@@ -101,4 +105,10 @@ jobs:
           aws-region: us-east-1
       - name: Publish
         run: |
-          aws ecs update-service --service ${{ steps.sername.outputs.service }} --force-new-deployment --cluster ${{ env.ECS_Cluster }}
+          if [[ ${{ steps.sername.outputs.service }} == "none" ]]; then
+            echo "No service to deploy"
+          else
+            for services in $(jq -r '.[]' <<< "${{ steps.sername.outputs.service }}"); do
+              aws ecs update-service --service topia-${{ env.ENV }}-${service}0" --force-new-deployment --cluster ${{ env.ECS_Cluster }}
+            done
+          fi

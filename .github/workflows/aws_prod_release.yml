@@ -33,12 +33,12 @@ jobs:
         run: |
           service_value=$(jq -c ".\"$reponame\"" <<< "$repo_service_map")
           echo "$(echo $service_value | jq -c)"
-          if [[ -z "$service_value" ]]; then
+          if [[ $service_value == null ]]; then
             echo "Service value from map is missing. Using repository name instead."
-            echo "service=[$reponame]" >> "$GITHUB_OUTPUT"
+            echo "service=[\""$reponame"\"]" >> "$GITHUB_OUTPUT"
           elif [[ -n "$service_value" && $(echo "$service_value" | jq 'length == 0') == "true" ]]; then
               echo "The app has no service deployed"
-              echo "service=none" >> "$GITHUB_OUTPUT"
+              echo "service=[]" >> "$GITHUB_OUTPUT"
           else
             echo "service=$service_value" >> "$GITHUB_OUTPUT"
             echo "Service value: $(echo $service_value | jq -c )"

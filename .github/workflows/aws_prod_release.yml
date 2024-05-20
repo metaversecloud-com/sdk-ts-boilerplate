@@ -19,6 +19,8 @@ permissions:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      service: ${{ steps.sername.outputs.service }}
     steps:
 
       - name: Checkout
@@ -41,9 +43,6 @@ jobs:
             echo "service=$service_value" >> "$GITHUB_OUTPUT"
             echo "Service value: $(echo $service_value | jq -c )"
           fi
-                
-        outputs:
-          service: ${{ steps.sername.outputs.service }}
 
       - uses: actions/setup-node@v4
         with:

@@ -106,7 +106,7 @@ jobs:
     needs: Build
     strategy:
       matrix:
-        service: $(echo "${{needs.Build.outputs.service}}" | sed 's/"//g')
+        service: ${{ fromJson(needs.Build.outputs.service) }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

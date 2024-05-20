@@ -88,7 +88,7 @@ jobs:
     needs: Build
     strategy:
       matrix:
-        service: ${{ needs.sername.outputs.service }}
+        service: ${{ needs.Build.outputs.service }}
     steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

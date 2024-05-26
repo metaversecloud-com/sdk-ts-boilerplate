@@ -8,7 +8,7 @@ env:
   ECS_Cluster: "topia-prod-sdk-apps"
   ENV: "prod"
   reponame: "${{ github.event.repository.name }}"
-  repo_service_map: '{"sdk-template":[],"sdk-build-an-asset":["locker","snowman"],"sdk-race":["race"],"sdk-chess-game":["chess"],"jukebox":["jukebox"],"sdk-bulletin-board-app":["bboard"],"teams-notifier":[],"sdk-scavenger-hunt":["svghunt"],"sdk-tictactoe":["tictactoe"],"sdk-checkers":["checkers"],"sdk-quest":["quest"], "virtual-pet":["vpet"],"sdk-collaborative-puzzle":["puzzle"],"sdk-quiz":["quiz"],"sdk-topia-activity-apps":["act-apps"]}'
+
 concurrency:
   group: ${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true

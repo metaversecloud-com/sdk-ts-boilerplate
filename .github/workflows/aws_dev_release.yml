@@ -30,7 +30,7 @@ jobs:
       - name: get servicename
         id: sername
         run: |
-          service_value=$(jq -c ".\"$reponame\"" <<< "$repo_service_map")
+          service_value=$(jq -c ".\"$reponame\"" <<< '${{ vars.repo_service_map }}')
           echo "$(echo $service_value | jq -c)"
           if [[ $service_value == null ]]; then
             echo "Service value from map is missing. Using repository name instead."

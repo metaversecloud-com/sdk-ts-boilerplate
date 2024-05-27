@@ -76,7 +76,7 @@ jobs:
 
       - name: Image Metadata
         id: metadata
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
           tags: |
@@ -84,7 +84,7 @@ jobs:
 
       - name: Image Metadata
         id: metadata-latest
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
           tags: |

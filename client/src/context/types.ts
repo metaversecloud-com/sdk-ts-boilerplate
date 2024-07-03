@@ -4,6 +4,7 @@ export const SET_INTERACTIVE_PARAMS = "SET_INTERACTIVE_PARAMS";
 export type InteractiveParams = {
   assetId: string;
   displayName: string;
+  identityId: string;
   interactiveNonce: string;
   interactivePublicKey: string;
   profileId: string;

@@ -23,6 +23,7 @@ const App = () => {
     return {
       assetId: searchParams.get("assetId") || "",
       displayName: searchParams.get("displayName") || "",
+      identityId: searchParams.get("identityId") || "",
       interactiveNonce: searchParams.get("interactiveNonce") || "",
       interactivePublicKey: searchParams.get("interactivePublicKey") || "",
       profileId: searchParams.get("profileId") || "",
@@ -38,6 +39,7 @@ const App = () => {
     ({
       assetId,
       displayName,
+      identityId,
       interactiveNonce,
       interactivePublicKey,
       profileId,
@@ -47,33 +49,35 @@ const App = () => {
       username,
       visitorId,
     }: InteractiveParams) => {
-      const isInteractiveIframe = visitorId && interactiveNonce && interactivePublicKey && assetId;
       dispatch!({
         type: SET_INTERACTIVE_PARAMS,
         payload: {
-          assetId,
-          displayName,
-          interactiveNonce,
-          interactivePublicKey,
-          isInteractiveIframe,
-          profileId,
-          sceneDropId,
-          uniqueName,
-          urlSlug,
-          username,
-          visitorId,
+          interactiveParams: {
+            assetId,
+            displayName,
+            identityId,
+            interactiveNonce,
+            interactivePublicKey,
+            profileId,
+            sceneDropId,
+            uniqueName,
+            urlSlug,
+            username,
+            visitorId,
+          },
         },
       });
     },
     [dispatch],
   );
 
-  const setHasSetupBackend = useCallback((success: boolean) => {
-    dispatch!({
-      type: SET_HAS_SETUP_BACKEND,
-      payload: { hasSetupBackend: success },
-    });
-  },
+  const setHasSetupBackend = useCallback(
+    (success: boolean) => {
+      dispatch!({
+        type: SET_HAS_SETUP_BACKEND,
+        payload: { hasSetupBackend: success },
+      });
+    },
     [dispatch],
   );
 
@@ -81,7 +85,7 @@ const App = () => {
     setupBackendAPI(interactiveParams)
       .then(() => setHasSetupBackend(true))
       .catch(() => navigate("*"))
-      .finally(() => setHasInitBackendAPI(true))
+      .finally(() => setHasInitBackendAPI(true));
   };
 
   useEffect(() => {
@@ -95,7 +99,6 @@ const App = () => {
   useEffect(() => {
     if (!hasInitBackendAPI) setupBackend();
   }, [hasInitBackendAPI, interactiveParams]);
-
 
   return (
     <Routes>

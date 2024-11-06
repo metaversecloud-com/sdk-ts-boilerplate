@@ -3,7 +3,7 @@ import { globalReducer } from "./reducer";
 import { InitialState } from "./types";
 import GlobalState from "./GlobalState";
 
-const initialState: InitialState = { hasInteractiveParams: false, hasSetupBackend: false };
+const initialState: InitialState = { error: "", gameState: {}, hasInteractiveParams: false, hasSetupBackend: false };
 
 const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(globalReducer, initialState);

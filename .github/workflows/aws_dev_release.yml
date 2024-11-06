@@ -1,13 +1,15 @@
-name: AWS-Build-Push-Prod
+name: AWS-Build-Push-Dev
 on:
-  release:
-    types: [published]
-
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+        
 env:
-  REPOSITORY: 'sdk-prod'
-  ECS_Cluster: "topia-prod-sdk-apps"
-  ENV: "prod"
+  REPOSITORY: 'sdk-example'
+  ECS_Cluster: "topia-dev-sdk-apps"
   reponame: "${{ github.event.repository.name }}"
+  ENV: "dev"
 
 concurrency:
   group: ${{ github.event.pull_request.number || github.ref }}
@@ -22,11 +24,8 @@ jobs:
     outputs:
       service: ${{ steps.sername.outputs.service }}
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.tag_name }}
               
       - name: get servicename
         id: sername
@@ -43,19 +42,16 @@ jobs:
             echo "service=$service_value" >> "$GITHUB_OUTPUT"
             echo "Service value: $(echo $service_value | jq -c )"
           fi
-
+                
       - uses: actions/setup-node@v4
         with:
           node-version: 20.10
           cache: 'npm'
-      - run: git config --global user.email devops@topia.io
-      - run: git config --global user.name Devops
-      - run: npm version --workspaces --include-workspace-root true ${{ github.event.release.tag_name }}
       - run: npm i
       - run: CI=false npm run build
                 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3.0.0
+        uses: docker/setup-qemu-action@v3
                   
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -69,36 +65,21 @@ jobs:
         with:
           mask-password: 'false'
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          buildkitd-flags: --debug
-
       - name: Image Metadata
         id: metadata
         uses: docker/metadata-action@v5
         with:
           images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
           tags: |
-            type=raw,value=${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+            type=raw,value=${{ github.event.repository.name }}
 
-      - name: Image Metadata
-        id: metadata-latest
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ steps.login-ecr.outputs.registry }}/${{ env.REPOSITORY }}
-          tags: |
-            type=raw,value=${{ github.event.repository.name }}-latest
-
-      - name: Build and version tag
+      - name: Build and  tag
         run: |
-          docker build --build-arg REF=${{ github.ref}} --build-arg COMMIT_HASH=${{ github.sha}} -t ${{ steps.metadata.outputs.tags }} .
-          docker tag ${{ steps.metadata.outputs.tags }} ${{ steps.metadata-latest.outputs.tags }}
-                        
+          docker build --build-arg COMMIT_HASH=${{ github.sha }} --build-arg REF=${{ github.ref }} -t ${{ steps.metadata.outputs.tags }} .
+                  
       - name: push docker image to Amazon ECR
         run: |
           docker push ${{ steps.metadata.outputs.tags }}
-          docker push ${{ steps.metadata-latest.outputs.tags }}
 
               
   deploy_matrix:
@@ -111,10 +92,10 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::471112828260:role/github-actions-role
+          role-to-assume: arn:aws:iam::368076259134:role/github-actions-role
           aws-region: us-east-1
 
       - name: deploy
         run: |
           aws ecs update-service --cluster ${{ env.ECS_Cluster }} --service topia-${{ env.ENV }}-${{ matrix.service }}0 --force-new-deployment  
-              
+          

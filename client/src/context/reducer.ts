@@ -1,4 +1,11 @@
-import { ActionType, InitialState, SET_HAS_SETUP_BACKEND, SET_INTERACTIVE_PARAMS } from "./types";
+import {
+  ActionType,
+  InitialState,
+  SET_ERROR,
+  SET_GAME_STATE,
+  SET_HAS_SETUP_BACKEND,
+  SET_INTERACTIVE_PARAMS,
+} from "./types";
 
 const globalReducer = (state: InitialState, action: ActionType) => {
   const { type, payload } = action;
@@ -15,6 +22,18 @@ const globalReducer = (state: InitialState, action: ActionType) => {
         ...payload,
         hasSetupBackend: true,
       };
+    case SET_GAME_STATE:
+      return {
+        ...state,
+        ...payload,
+        error: "",
+      };
+    case SET_ERROR:
+      return {
+        ...state,
+        error: payload.error,
+      };
+
     default: {
       throw new Error(`Unhandled action type: ${type}`);
     }

@@ -1,27 +1,60 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+
+// components
+import { PageContainer, PageFooter } from "@/components";
 
 // context
-import { GlobalStateContext } from "@/context/GlobalContext";
+import { GlobalDispatchContext, GlobalStateContext } from "@/context/GlobalContext";
 
 // utils
-import { backendAPI } from "@/utils/backendAPI";
+import { backendAPI, setErrorMessage, setGameState } from "@/utils";
+
+const defaultDroppedAsset = { assetName: "", bottomLayerURL: "", id: null, topLayerURL: null };
 
 const Home = () => {
-  const [droppedAsset, setDroppedAsset] = useState({ assetName: "", bottomLayerURL: "", id: null, topLayerURL: null });
+  const dispatch = useContext(GlobalDispatchContext);
+  const { gameState, hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
 
-  const { hasInteractiveParams, hasSetupBackend } = useContext(GlobalStateContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const [areButtonsDisabled, setAreButtonsDisabled] = useState(false);
+  const [droppedAsset, setDroppedAsset] = useState(defaultDroppedAsset);
+
+  useEffect(() => {
+    if (hasInteractiveParams) {
+      backendAPI
+        .get("/dropped-asset")
+        .then((response) => {
+          setGameState(dispatch, response.data);
+          setDroppedAsset(response.data.droppedAsset);
+        })
+        .catch((error) => setErrorMessage(dispatch, error))
+        .finally(() => {
+          setIsLoading(false);
+          console.log("🚀 ~ Home.tsx ~ gameState:", gameState);
+        });
+    }
+  }, [hasInteractiveParams]);
 
   const handleGetDroppedAsset = async () => {
-    backendAPI.get("/dropped-asset")
-      .then((result) => setDroppedAsset(result.data.droppedAsset))
-      .catch((error) => console.error(error))
+    setAreButtonsDisabled(true);
+    setDroppedAsset(defaultDroppedAsset);
+
+    backendAPI
+      .get("/dropped-asset")
+      .then((response) => {
+        setDroppedAsset(response.data.droppedAsset);
+      })
+      .catch((error) => setErrorMessage(dispatch, error))
+      .finally(() => {
+        setAreButtonsDisabled(false);
+      });
   };
 
-  if (!hasSetupBackend) return <div />
+  if (!hasSetupBackend) return <div />;
 
   return (
-    <div className="container p-6 flex items-center justify-start">
-      <div className="flex flex-col">
+    <PageContainer isLoading={isLoading}>
+      <>
         <h1 className="h2">Server side example using interactive parameters</h1>
         <div className="max-w-screen-lg">
           {!hasInteractiveParams ? (
@@ -36,9 +69,6 @@ const Home = () => {
           )}
         </div>
 
-        <button className="btn" onClick={handleGetDroppedAsset}>
-          Get Dropped Asset Details
-        </button>
         {droppedAsset.id && (
           <div className="flex flex-col w-full items-start">
             <p className="mt-4 mb-2">
@@ -51,8 +81,14 @@ const Home = () => {
             />
           </div>
         )}
-      </div>
-    </div>
+
+        <PageFooter>
+          <button className="btn" disabled={areButtonsDisabled} onClick={handleGetDroppedAsset}>
+            Get Dropped Asset Details
+          </button>
+        </PageFooter>
+      </>
+    </PageContainer>
   );
 };
 

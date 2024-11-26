@@ -1,0 +1,44 @@
+name: "Create a new patch release on merge to main"
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  ENV: "prod"
+  reponame: "${{ github.event.repository.name }}"
+
+concurrency:
+  group: ${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+                
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read  # This is required for actions/checkout
+jobs:
+  Release_Patch:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Versioning
+        id: version
+        run: |
+          git config --global user.email devops@topia.io
+          git config --global user.name Devops
+          VERSION=$(npm version --workspaces --include-workspace-root true patch)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_ENV
+          git add . && git commit -m "chore: bump version" && git push && git push --tags
+                
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.version }}
+          name: Release ${{ env.version }}
+          generate_release_notes: true

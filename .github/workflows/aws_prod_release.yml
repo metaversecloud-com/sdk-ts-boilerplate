@@ -92,7 +92,7 @@ jobs:
 
       - name: Build and version tag
         run: |
-          docker build --build-arg REF=${{ github.ref}} --build-arg COMMIT_HASH=${{ github.sha}} -t ${{ steps.metadata.outputs.tags }} .
+          docker build --build-arg REF=${{ github.ref}} --build-arg COMMIT_HASH=$(git rev-parse --short ${{ github.sha }}) -t ${{ steps.metadata.outputs.tags }} .
           docker tag ${{ steps.metadata.outputs.tags }} ${{ steps.metadata-latest.outputs.tags }}
                         
       - name: push docker image to Amazon ECR

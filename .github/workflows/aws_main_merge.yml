@@ -15,7 +15,8 @@ concurrency:
                 
 permissions:
   id-token: write # This is required for requesting the JWT
-  contents: read  # This is required for actions/checkout
+  contents: write  # This is required for actions/checkout
+
 jobs:
   Release_Patch:
     runs-on: ubuntu-latest

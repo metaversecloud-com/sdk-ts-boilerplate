@@ -35,7 +35,14 @@ jobs:
           VERSION=$(npm version --workspaces --include-workspace-root true patch)
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_ENV
-          git commit -a -m "chore: bump version ${VERSION}" && git push origin dev && git push --tags origin dev
+                  
+      - name: Push to protected branch
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.PAT }}
+          branch: main
+          unprotect_reviews: true
+          tags: true
                 
       - name: Create Release
         uses: softprops/action-gh-release@v2

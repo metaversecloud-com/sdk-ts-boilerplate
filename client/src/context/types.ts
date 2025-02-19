@@ -22,8 +22,9 @@ export interface InitialState {
   gameState?: object;
   hasInteractiveParams?: boolean;
   hasSetupBackend?: boolean;
-  interactiveParams?: InteractiveParams;
-  visitor?: { isAdmin: boolean; isInZone: boolean; profileId: string };
+  profileId?: string;
+  sceneDropId?: string;
+  visitor?: { isAdmin: boolean; isInZone: boolean };
 }
 
 export type ActionType = {

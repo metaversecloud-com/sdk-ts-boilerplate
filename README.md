@@ -92,7 +92,6 @@ INTERACTIVE_SECRET=xxxxxxxxxxxxxx
 
 - [SDK Developer docs](https://metaversecloud-com.github.io/mc-sdk-js/index.html)
 - [View it in action!](topia.io/appname-prod)
-- [Notion One Pager](https://www.notion.so/topiaio/6257c74f9532449b842cfe557975c826?v=8cdffb024588478caeee0cecb8989e82&pvs=4)
 - To see an example of an on canvas turn based game check out TicTacToe:
   - (github))[https://github.com/metaversecloud-com/sdk-tictactoe]
   - (demo))[https://topia.io/tictactoe-prod]

@@ -3,14 +3,14 @@ import { Asset, DroppedAsset, errorHandler, getCredentials } from "../../utils/i
 
 export const handleDropAsset = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {
+    const credentials = getCredentials(req.query);
+
     const {
       assetId,
       isInteractive,
       position,
       uniqueName,
     }: { assetId: string; isInteractive: boolean; position: { x: number; y: number }; uniqueName: string } = req.body;
-
-    const credentials = getCredentials(req.query);
 
     const asset = Asset.create(assetId, { credentials });
 

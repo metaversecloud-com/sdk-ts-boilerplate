@@ -13,8 +13,9 @@ const globalReducer = (state: InitialState, action: ActionType) => {
     case SET_INTERACTIVE_PARAMS:
       return {
         ...state,
-        ...payload,
         hasInteractiveParams: true,
+        profileId: payload.profileId,
+        sceneDropId: payload.sceneDropId,
       };
     case SET_HAS_SETUP_BACKEND:
       return {
@@ -31,7 +32,7 @@ const globalReducer = (state: InitialState, action: ActionType) => {
     case SET_ERROR:
       return {
         ...state,
-        error: payload.error,
+        error: payload?.error,
       };
 
     default: {

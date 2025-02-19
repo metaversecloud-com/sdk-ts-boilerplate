@@ -12,6 +12,7 @@
     "dev-client": "npm run dev --prefix client"
   },
   "dependencies": {
+    "@rtsdk/topia": "^0.14.0",
     "axios": "^1.6.8",
     "concurrently": "^8.2.2"
   },

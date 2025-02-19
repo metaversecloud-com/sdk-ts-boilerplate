@@ -36,35 +36,12 @@ const App = () => {
   }, [searchParams]);
 
   const setInteractiveParams = useCallback(
-    ({
-      assetId,
-      displayName,
-      identityId,
-      interactiveNonce,
-      interactivePublicKey,
-      profileId,
-      sceneDropId,
-      uniqueName,
-      urlSlug,
-      username,
-      visitorId,
-    }: InteractiveParams) => {
+    ({ profileId, sceneDropId }: InteractiveParams) => {
       dispatch!({
         type: SET_INTERACTIVE_PARAMS,
         payload: {
-          interactiveParams: {
-            assetId,
-            displayName,
-            identityId,
-            interactiveNonce,
-            interactivePublicKey,
-            profileId,
-            sceneDropId,
-            uniqueName,
-            urlSlug,
-            username,
-            visitorId,
-          },
+          profileId,
+          sceneDropId,
         },
       });
     },

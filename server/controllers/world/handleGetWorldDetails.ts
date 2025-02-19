@@ -12,7 +12,7 @@ export const handleGetWorldDetails = async (req: Request, res: Response) => {
 
     return res.json({ world, success: true });
   } catch (error) {
-    errorHandler({
+    return errorHandler({
       error,
       functionName: "getWorldDetails",
       message: "Error getting world details",

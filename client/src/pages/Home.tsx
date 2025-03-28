@@ -27,6 +27,9 @@ const Home = () => {
           setGameState(dispatch, response.data);
           setDroppedAsset(response.data.droppedAsset);
         })
+        .then(() => {
+          backendAPI.put("/world/fire-toast");
+        })
         .catch((error) => setErrorMessage(dispatch, error))
         .finally(() => {
           setIsLoading(false);

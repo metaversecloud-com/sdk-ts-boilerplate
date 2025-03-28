@@ -16,7 +16,7 @@ export const ConfirmationModal = ({
 
   const [areButtonsDisabled, setAreButtonsDisabled] = useState(false);
 
-  const handleResetQuiz = () => {
+  const handleReset = () => {
     setAreButtonsDisabled(true);
 
     backendAPI
@@ -32,7 +32,7 @@ export const ConfirmationModal = ({
   return (
     <div className="modal-container">
       <div className="modal">
-        <h4>Reset Quiz?</h4>
+        <h4>Reset?</h4>
         <p>All player data will be erased.</p>
         <div className="actions">
           <button
@@ -43,7 +43,7 @@ export const ConfirmationModal = ({
           >
             No
           </button>
-          <button className="btn btn-danger-outline" onClick={() => handleResetQuiz()} disabled={areButtonsDisabled}>
+          <button className="btn btn-danger-outline" onClick={() => handleReset()} disabled={areButtonsDisabled}>
             Yes
           </button>
         </div>

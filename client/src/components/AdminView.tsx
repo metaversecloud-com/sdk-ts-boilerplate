@@ -19,7 +19,12 @@ export const AdminView = () => {
       </PageFooter>
 
       {showConfirmationModal && (
-        <ConfirmationModal handleToggleShowConfirmationModal={handleToggleShowConfirmationModal} />
+        <ConfirmationModal
+          title="Reset"
+          message="Are you sure you want to reset? This action cannot be undone."
+          handleOnConfirm={() => console.log("Confirmed!")}
+          handleToggleShowConfirmationModal={handleToggleShowConfirmationModal}
+        />
       )}
     </div>
   );

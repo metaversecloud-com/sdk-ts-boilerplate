@@ -4,16 +4,10 @@ import { Request, Response } from "express";
 export const handleGetDroppedAssetsWithUniqueName = async (req: Request, res: Response) => {
   try {
     const credentials = getCredentials(req.query);
-    const { interactivePublicKey, interactiveNonce, uniqueName, urlSlug, visitorId } = credentials;
+    const { uniqueName, urlSlug } = credentials;
     const { isPartial = true } = req.query;
 
-    const world = World.create(urlSlug, {
-      credentials: {
-        interactiveNonce,
-        interactivePublicKey,
-        visitorId,
-      },
-    });
+    const world = World.create(urlSlug, { credentials });
     const droppedAssets = await world.fetchDroppedAssetsWithUniqueName({
       isPartial: !!isPartial,
       uniqueName,

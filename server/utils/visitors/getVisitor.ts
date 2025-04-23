@@ -4,15 +4,9 @@ import { Credentials } from "../../types/Credentials.js";
 
 export const getVisitor = async (credentials: Credentials) => {
   try {
-    const { interactivePublicKey, interactiveNonce, urlSlug, visitorId } = credentials;
+    const { urlSlug, visitorId } = credentials;
 
-    const visitor = await Visitor.get(visitorId, urlSlug, {
-      credentials: {
-        interactiveNonce,
-        interactivePublicKey,
-        visitorId,
-      },
-    });
+    const visitor = await Visitor.get(visitorId, urlSlug, { credentials });
 
     if (!visitor) throw "Not in world";
 

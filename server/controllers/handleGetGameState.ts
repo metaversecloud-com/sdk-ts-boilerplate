@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
-import { DroppedAsset, errorHandler, getCredentials, initializeDroppedAssetDataObject } from "../../utils/index.js";
-import { IDroppedAsset } from "../../types/DroppedAssetInterface.js";
+import {
+  DroppedAsset,
+  errorHandler,
+  getCredentials,
+  initializeDroppedAssetDataObject,
+  Visitor,
+} from "../utils/index.js";
+import { IDroppedAsset } from "../types/DroppedAssetInterface.js";
+import { VisitorInterface } from "@rtsdk/topia";
 
-export const handleGetDroppedAsset = async (req: Request, res: Response) => {
+export const handleGetGameState = async (req: Request, res: Response) => {
   try {
     const credentials = getCredentials(req.query);
-    const { assetId, urlSlug } = credentials;
+    const { assetId, urlSlug, visitorId } = credentials;
     const droppedAsset = await DroppedAsset.get(assetId, urlSlug, { credentials });
 
     // If the application will make any updates to a dropped asset's data object we need to
@@ -13,7 +20,10 @@ export const handleGetDroppedAsset = async (req: Request, res: Response) => {
     // The same should be true for World, User, and Visitor data objects
     await initializeDroppedAssetDataObject(droppedAsset as IDroppedAsset);
 
-    return res.json({ droppedAsset, success: true });
+    const visitor: VisitorInterface = await Visitor.get(visitorId, urlSlug, { credentials });
+    const { isAdmin, displayName } = visitor;
+
+    return res.json({ droppedAsset, visitor: { isAdmin, displayName }, success: true });
   } catch (error) {
     return errorHandler({
       error,

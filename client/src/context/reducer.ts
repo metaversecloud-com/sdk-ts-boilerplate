@@ -26,7 +26,8 @@ const globalReducer = (state: InitialState, action: ActionType) => {
     case SET_GAME_STATE:
       return {
         ...state,
-        ...payload,
+        droppedAsset: payload.droppedAsset,
+        visitor: payload.visitor,
         error: "",
       };
     case SET_ERROR:

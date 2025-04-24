@@ -27,9 +27,9 @@ export const PageContainer = ({
           <AdminIconButton setShowSettings={() => setShowSettings(!showSettings)} showSettings={showSettings} />
         </div>
       )}
-      {(headerText || showSettings) && (
+      {headerText && (
         <div className="pb-6">
-          <h2>{showSettings ? "Settings" : headerText}</h2>
+          <h2>{headerText}</h2>
         </div>
       )}
       {showSettings ? (

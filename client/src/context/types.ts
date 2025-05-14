@@ -18,13 +18,14 @@ export type InteractiveParams = {
 };
 
 export interface InitialState {
+  isAdmin?: boolean;
+  droppedAsset?: { assetName: string; bottomLayerURL: string; id: string; topLayerURL: string };
   error?: string;
-  gameState?: object;
   hasInteractiveParams?: boolean;
   hasSetupBackend?: boolean;
   profileId?: string;
   sceneDropId?: string;
-  visitor?: { isAdmin: boolean; isInZone: boolean };
+  visitor?: { isAdmin: boolean; displayName: string };
 }
 
 export type ActionType = {

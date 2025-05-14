@@ -1,11 +1,9 @@
 import express from "express";
 import {
   handleDropAsset,
-  handleGetDroppedAsset,
-  handleGetVisitor,
+  handleGetGameState,
   handleRemoveDroppedAssetsByUniqueName,
-  handleGetWorldDetails,
-  handleUpdateWorldDataObject,
+  handleFireToast,
 } from "./controllers/index.js";
 import { getVersion } from "./utils/getVersion.js";
 
@@ -31,15 +29,11 @@ router.get("/system/health", (req, res) => {
 });
 
 // Dropped Assets
+router.get("/game-state", handleGetGameState);
 router.post("/dropped-asset", handleDropAsset);
-router.get("/dropped-asset", handleGetDroppedAsset);
 router.post("/remove-dropped-assets", handleRemoveDroppedAssetsByUniqueName);
 
-// Visitor
-router.get("/visitor", handleGetVisitor);
-
 // World
-router.get("/world", handleGetWorldDetails);
-router.put("/world/data-object", handleUpdateWorldDataObject);
+router.put("/world/fire-toast", handleFireToast);
 
 export default router;

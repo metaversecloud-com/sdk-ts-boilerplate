@@ -3,7 +3,7 @@ import { useContext } from "react";
 // context
 import { GlobalStateContext } from "@/context/GlobalContext";
 
-const DroppedAssetDetails = () => {
+export const DroppedAssetDetails = () => {
   const { droppedAsset, hasInteractiveParams } = useContext(GlobalStateContext);
 
   return (

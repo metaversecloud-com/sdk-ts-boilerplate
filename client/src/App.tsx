@@ -2,8 +2,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 
 // pages
-import Home from "@pages/Home";
-import Error from "@pages/Error";
+import { Error, Home } from "./pages";
 
 // context
 import { GlobalDispatchContext } from "./context/GlobalContext";

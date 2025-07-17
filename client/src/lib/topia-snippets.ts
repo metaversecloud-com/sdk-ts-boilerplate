@@ -37,7 +37,7 @@ export async function connectTopia(): Promise<void> {
  * @example await firework();            // fireworks
  */
 export const firework = (type = "fireworks") =>
-  client.triggerParticleEffect(type);                                     //:contentReference[oaicite:1]{index=1}
+  client.triggerParticleEffect(type);                                     
 
 /**
  * Teleport any user to an (x,y) coordinate.
@@ -98,7 +98,7 @@ export const on = (
 ) => client.subscribeToWorldEvents(channel, cb);
 
 /*============================================================
-  👫  PROFILES & PLAYERS   <-- NEW
+  👫  PROFILES & PLAYERS
 ============================================================*/
 /**
  * Get the profile of the **current** user.
@@ -127,7 +127,7 @@ export const hideAsset = (id: string, hide = true) =>
   client[hide ? "hideAsset" : "showAsset"](id);
 
 /*============================================================
-  🏗️  ASSET SPAWN / MOVE / DESTROY   <-- NEW
+  🏗️  ASSET SPAWN / MOVE / DESTROY
 ============================================================*/
 /**
  * Spawn a new asset from a media URL at (x,y).

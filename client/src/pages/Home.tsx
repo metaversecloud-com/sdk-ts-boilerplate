@@ -1,16 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 
 // components
-import { PageContainer } from "@/components";
+import { PageContainer, DroppedAssetDetails } from "@/components";
 
 // context
 import { GlobalDispatchContext, GlobalStateContext } from "@/context/GlobalContext";
 
 // utils
 import { backendAPI, setErrorMessage, setGameState } from "@/utils";
-import DroppedAssetDetails from "@/components/DroppedAssetDetails";
 
-const Home = () => {
+export const Home = () => {
   const dispatch = useContext(GlobalDispatchContext);
   const { hasInteractiveParams } = useContext(GlobalStateContext);
 

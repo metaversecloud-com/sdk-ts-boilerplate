@@ -16,9 +16,9 @@ export const AdminView = () => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [areButtonsDisabled, setAreButtonsDisabled] = useState(false);
 
-  function handleToggleShowConfirmationModal() {
+  const handleToggleShowConfirmationModal = () => {
     setShowConfirmationModal(!showConfirmationModal);
-  }
+  };
 
   const handleDropAsset = async () => {
     setAreButtonsDisabled(true);

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Asset, DroppedAsset, errorHandler, getCredentials } from "../utils/index.js";
+import { Asset, DroppedAsset, errorHandler, getCredentials, World } from "../utils/index.js";
 import { DroppedAssetInterface } from "@rtsdk/topia";
 
 export const handleDropAsset = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
@@ -7,8 +7,8 @@ export const handleDropAsset = async (req: Request, res: Response): Promise<Reco
     const credentials = getCredentials(req.query);
     const { assetId, interactivePublicKey, sceneDropId, urlSlug } = credentials;
 
+    const world = World.create(urlSlug, { credentials });
     const droppedAsset: DroppedAssetInterface = await DroppedAsset.get(assetId, urlSlug, { credentials });
-
     const asset = Asset.create(droppedAsset.assetId!, { credentials });
 
     const xOffset = Math.floor(Math.random() * 200);
@@ -25,6 +25,15 @@ export const handleDropAsset = async (req: Request, res: Response): Promise<Reco
     });
 
     droppedAsset.incrementDataObjectValue("droppedAssetCount", 1, {});
+
+    world.triggerParticle({
+      name: "whiteStar_burst",
+      duration: 3,
+      position: {
+        x: droppedAsset?.position?.x,
+        y: droppedAsset?.position?.y,
+      },
+    });
 
     return res.json({ success: true });
   } catch (error) {

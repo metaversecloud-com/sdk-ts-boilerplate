@@ -32,3 +32,10 @@ export type ActionType = {
   type: string;
   payload: InitialState;
 };
+
+export type ErrorType =
+  | string
+  | {
+      message?: string;
+      response?: { data?: { error?: { message?: string }; message?: string } };
+    };

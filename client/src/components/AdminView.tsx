@@ -5,6 +5,7 @@ import { PageFooter, ConfirmationModal } from "@/components";
 
 // context
 import { GlobalDispatchContext, GlobalStateContext } from "@/context/GlobalContext";
+import { ErrorType } from "@/context/types";
 
 // utils
 import { backendAPI, setErrorMessage } from "@/utils";
@@ -28,7 +29,7 @@ export const AdminView = () => {
       .then(() => {
         backendAPI.put("/world/fire-toast", { title: "Asset successfully dropped!" });
       })
-      .catch((error) => setErrorMessage(dispatch, error))
+      .catch((error) => setErrorMessage(dispatch, error as ErrorType))
       .finally(() => {
         setAreButtonsDisabled(false);
       });
@@ -45,7 +46,7 @@ export const AdminView = () => {
           text: "All dropped assets with matching unique name have been removed from this world.",
         });
       })
-      .catch((error) => setErrorMessage(dispatch, error))
+      .catch((error) => setErrorMessage(dispatch, error as ErrorType))
       .finally(() => {
         setAreButtonsDisabled(false);
       });

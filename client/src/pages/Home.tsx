@@ -5,6 +5,7 @@ import { PageContainer, DroppedAssetDetails } from "@/components";
 
 // context
 import { GlobalDispatchContext, GlobalStateContext } from "@/context/GlobalContext";
+import { ErrorType } from "@/context/types";
 
 // utils
 import { backendAPI, setErrorMessage, setGameState } from "@/utils";
@@ -22,10 +23,8 @@ export const Home = () => {
         .then((response) => {
           setGameState(dispatch, response.data);
         })
-        .catch((error) => setErrorMessage(dispatch, error))
-        .finally(() => {
-          setIsLoading(false);
-        });
+        .catch((error) => setErrorMessage(dispatch, error as ErrorType))
+        .finally(() => setIsLoading(false));
     }
   }, [hasInteractiveParams]);
 

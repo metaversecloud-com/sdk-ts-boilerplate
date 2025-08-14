@@ -5,7 +5,7 @@ import { DroppedAssetInterface } from "@rtsdk/topia";
 export const handleDropAsset = async (req: Request, res: Response): Promise<Record<string, any> | void> => {
   try {
     const credentials = getCredentials(req.query);
-    const { assetId, interactivePublicKey, sceneDropId, urlSlug } = credentials;
+    const { assetId, interactivePublicKey, profileId, sceneDropId, urlSlug } = credentials;
 
     const world = World.create(urlSlug, { credentials });
     const droppedAsset: DroppedAssetInterface = await DroppedAsset.get(assetId, urlSlug, { credentials });
@@ -24,7 +24,9 @@ export const handleDropAsset = async (req: Request, res: Response): Promise<Reco
       urlSlug,
     });
 
-    droppedAsset.incrementDataObjectValue("droppedAssetCount", 1, {});
+    droppedAsset.incrementDataObjectValue("droppedAssetCount", 1, {
+      analytics: [{ analyticName: "drops", uniqueKey: profileId }],
+    });
 
     world.triggerParticle({
       name: "whiteStar_burst",

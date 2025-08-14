@@ -25,7 +25,6 @@ export interface InitialState {
   hasSetupBackend?: boolean;
   profileId?: string;
   sceneDropId?: string;
-  visitor?: { isAdmin: boolean; displayName: string };
 }
 
 export type ActionType = {

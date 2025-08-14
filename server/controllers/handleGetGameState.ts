@@ -1,13 +1,5 @@
 import { Request, Response } from "express";
-import {
-  DroppedAsset,
-  errorHandler,
-  getCredentials,
-  initializeDroppedAssetDataObject,
-  Visitor,
-  World,
-} from "../utils/index.js";
-import { IDroppedAsset } from "../types/DroppedAssetInterface.js";
+import { errorHandler, getCredentials, getDroppedAsset, Visitor, World } from "../utils/index.js";
 import { VisitorInterface } from "@rtsdk/topia";
 import axios from "axios";
 
@@ -15,19 +7,8 @@ export const handleGetGameState = async (req: Request, res: Response) => {
   try {
     const credentials = getCredentials(req.query);
     const { assetId, displayName, interactiveNonce, interactivePublicKey, profileId, urlSlug, visitorId } = credentials;
-    const droppedAsset = await DroppedAsset.get(assetId, urlSlug, { credentials });
 
-    // If the application will make any updates to a dropped asset's data object we need to
-    // first instantiate to ensure it's existence and define it's proper structure.
-    // The same should be true for World, User, and Visitor data objects
-    await initializeDroppedAssetDataObject(droppedAsset as IDroppedAsset);
-
-    droppedAsset.updateDataObject(
-      {},
-      {
-        analytics: [{ analyticName: "starts", uniqueKey: profileId }],
-      },
-    );
+    const droppedAsset = await getDroppedAsset(credentials);
 
     const world = World.create(urlSlug, { credentials });
     world.triggerParticle({ name: "Sparkle", duration: 3, position: droppedAsset.position }).catch((error: any) =>
@@ -43,7 +24,7 @@ export const handleGetGameState = async (req: Request, res: Response) => {
 
     try {
       await axios.post(
-        `${process.env.LEADERBOARD_BASE_URL}/api/dropped-asset/increment-player-stats?assetId=${assetId}&displayName=${displayName}&interactiveNonce=${interactiveNonce}&interactivePublicKey=${interactivePublicKey}&profileId=${profileId}&urlSlug=${urlSlug}&visitorId=${visitorId}`,
+        `${process.env.LEADERBOARD_BASE_URL || "http://v2lboard0-prod-topia.topia-rtsdk.com"}/api/dropped-asset/increment-player-stats?assetId=${assetId}&displayName=${displayName}&interactiveNonce=${interactiveNonce}&interactivePublicKey=${interactivePublicKey}&profileId=${profileId}&urlSlug=${urlSlug}&visitorId=${visitorId}`,
         {
           publicKey: interactivePublicKey,
           secret: process.env.INTERACTIVE_SECRET,
@@ -60,7 +41,7 @@ export const handleGetGameState = async (req: Request, res: Response) => {
       });
     }
 
-    return res.json({ droppedAsset, visitor: { isAdmin, displayName }, success: true });
+    return res.json({ droppedAsset, isAdmin, success: true });
   } catch (error) {
     return errorHandler({
       error,

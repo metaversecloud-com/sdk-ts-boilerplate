@@ -22,6 +22,6 @@ export const setErrorMessage = (
 
   dispatch({
     type: SET_ERROR,
-    payload: { error: `Error: ${JSON.stringify(message)}` },
+    payload: { error: error === "" ? error : `Error: ${JSON.stringify(message)}` },
   });
 };

@@ -1,5 +1,5 @@
 import { Credentials, IDroppedAsset } from "../../types/index.js";
-import { DroppedAsset, errorHandler, initializeDroppedAssetDataObject } from "../index.js";
+import { DroppedAsset, initializeDroppedAssetDataObject } from "../index.js";
 
 export const getDroppedAsset = async (credentials: Credentials) => {
   try {
@@ -17,11 +17,7 @@ export const getDroppedAsset = async (credentials: Credentials) => {
     await droppedAsset.fetchDataObject();
 
     return droppedAsset;
-  } catch (error) {
-    return errorHandler({
-      error,
-      functionName: "getDroppedAsset",
-      message: "Error getting dropped asset",
-    });
+  } catch (error: any) {
+    return new Error(error);
   }
 };

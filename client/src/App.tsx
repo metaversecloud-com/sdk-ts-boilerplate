@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Route, Routes, useNavigate, useSearchParams } from "react-router-dom";
 
 // pages
@@ -6,7 +6,7 @@ import { Error, Home } from "./pages";
 
 // context
 import { GlobalDispatchContext } from "./context/GlobalContext";
-import { InteractiveParams, SET_HAS_SETUP_BACKEND, SET_INTERACTIVE_PARAMS } from "./context/types";
+import { InteractiveParams, SET_HAS_INTERACTIVE_PARAMS } from "./context/types";
 
 // utils
 import { setupBackendAPI } from "./utils/backendAPI";
@@ -34,47 +34,27 @@ const App = () => {
     };
   }, [searchParams]);
 
-  const setInteractiveParams = useCallback(
-    ({ profileId, sceneDropId }: InteractiveParams) => {
-      dispatch!({
-        type: SET_INTERACTIVE_PARAMS,
-        payload: {
-          profileId,
-          sceneDropId,
-        },
-      });
-    },
-    [dispatch],
-  );
-
-  const setHasSetupBackend = useCallback(
-    (success: boolean) => {
-      dispatch!({
-        type: SET_HAS_SETUP_BACKEND,
-        payload: { hasSetupBackend: success },
-      });
-    },
-    [dispatch],
-  );
-
-  const setupBackend = () => {
-    setupBackendAPI(interactiveParams)
-      .then(() => setHasSetupBackend(true))
-      .catch(() => navigate("*"))
-      .finally(() => setHasInitBackendAPI(true));
-  };
-
   useEffect(() => {
     if (interactiveParams.assetId) {
-      setInteractiveParams({
-        ...interactiveParams,
+      dispatch!({
+        type: SET_HAS_INTERACTIVE_PARAMS,
+        payload: { hasInteractiveParams: true },
       });
     }
-  }, [interactiveParams, setInteractiveParams]);
+  }, [interactiveParams]);
 
   useEffect(() => {
     if (!hasInitBackendAPI) setupBackend();
   }, [hasInitBackendAPI, interactiveParams]);
+
+  const setupBackend = () => {
+    setupBackendAPI(interactiveParams)
+      .catch((error) => {
+        console.error(error?.response?.data?.message);
+        navigate("*");
+      })
+      .finally(() => setHasInitBackendAPI(true));
+  };
 
   return (
     <Routes>

@@ -23,23 +23,15 @@ export const PageContainer = ({
   return (
     <div className="p-4 mb-28">
       {isAdmin && (
-        <div>
-          <AdminIconButton setShowSettings={() => setShowSettings(!showSettings)} showSettings={showSettings} />
-        </div>
+        <AdminIconButton setShowSettings={() => setShowSettings(!showSettings)} showSettings={showSettings} />
       )}
       {headerText && (
         <div className="pb-6">
           <h2>{headerText}</h2>
         </div>
       )}
-      {showSettings ? (
-        <AdminView />
-      ) : (
-        <>
-          {children}
-          {error && <p className="p3 pt-10 text-center text-error">{error}</p>}
-        </>
-      )}
+      {showSettings ? <AdminView /> : children}
+      {error && <p className="p3 pt-10 text-center text-error">{error}</p>}
     </div>
   );
 };

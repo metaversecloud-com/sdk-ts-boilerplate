@@ -1,5 +1,4 @@
 import { IDroppedAsset } from "../../types/DroppedAssetInterface.js";
-import { errorHandler } from "../errorHandler.js";
 
 export const initializeDroppedAssetDataObject = async (droppedAsset: IDroppedAsset) => {
   try {
@@ -12,12 +11,7 @@ export const initializeDroppedAssetDataObject = async (droppedAsset: IDroppedAss
     }
 
     return;
-  } catch (error) {
-    errorHandler({
-      error,
-      functionName: "initializeDroppedAssetDataObject",
-      message: "Error initializing dropped asset data object",
-    });
-    return await droppedAsset.fetchDataObject();
+  } catch (error: any) {
+    return new Error(error);
   }
 };

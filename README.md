@@ -42,11 +42,8 @@ _We use data objects to store information about each implementation of the app p
   - playerCount
   - resetCount
   - turnCount
-- World: the data object attached to the world will store analytics information for every instance of the app in a given world by keyAssetId and will persist even if a specific instance is removed from world. Example data:
-  - gamesPlayedByUser (`keyAssets.${assetId}.gamesPlayedByUser.${profileId}.count`)
-  - gamesWonByUser (`keyAssets.${keyAssetId}.gamesWonByUser.${profileId}.count`)
-  - totalGamesResetCount (`keyAssets.${assetId}.totalGamesResetCount`)
-  - totalGamesWonCount (`keyAssets.${assetId}.totalGamesWonCount`)
+- World: the data object attached to the world will store information for every instance of the app in a given world by keyAssetId or sceneDropId and will persist even if a specific instance is removed from world. Example data:
+  - config (`${sceneDropId}.config`)
 
 ## Developers:
 
@@ -57,6 +54,7 @@ _We use data objects to store information about each implementation of the app p
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![SDK Styles](https://sdk-style.s3.amazonaws.com/example.html)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 #### Server

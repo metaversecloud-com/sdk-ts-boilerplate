@@ -35,15 +35,33 @@ _Does your app have special admin functionality? If so your key features may loo
 
 _We use data objects to store information about each implementation of the app per world._
 
-- Key Asset: the data object attached to the dropped key asset will store information related to this specific implementation of the app and would be deleted if the key asset is removed from world. Example data:
-  - isResetInProgress
-  - lastInteraction
-  - lastPlayerTurn
-  - playerCount
-  - resetCount
-  - turnCount
-- World: the data object attached to the world will store information for every instance of the app in a given world by keyAssetId or sceneDropId and will persist even if a specific instance is removed from world. Example data:
-  - config (`${sceneDropId}.config`)
+#### Key Asset
+
+The data object attached to the dropped key asset will store information related to this specific implementation of the app and would be deleted if the key asset is removed from world. Example data:
+
+```ts
+{
+  isResetInProgress: boolean;
+  lastInteraction: string; // ISO date string when the plot was claimed
+  lastPlayerTurn: string; // ISO date string when the plot was claimed
+  playerCount: number;
+  resetCount: number;
+  turnCount: number;
+}
+```
+
+#### World
+
+The data object attached to the world will store information for every instance of the app in a given world by keyAssetId or sceneDropId and will persist even if a specific instance is removed from world. Example data:
+
+```ts
+{
+  [sceneDropId]: {
+    keyAssetId: string;
+    themeId: string;
+  }
+}
+```
 
 ## Developers:
 

@@ -1,4 +1,5 @@
 import { IDroppedAsset } from "../../types/DroppedAssetInterface.js";
+import { standardizeError } from "../index.js";
 
 export const initializeDroppedAssetDataObject = async (droppedAsset: IDroppedAsset) => {
   try {
@@ -12,6 +13,6 @@ export const initializeDroppedAssetDataObject = async (droppedAsset: IDroppedAss
 
     return;
   } catch (error: any) {
-    return new Error(error);
+    return standardizeError(error);
   }
 };

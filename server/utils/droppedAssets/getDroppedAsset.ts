@@ -1,5 +1,5 @@
 import { Credentials, IDroppedAsset } from "../../types/index.js";
-import { DroppedAsset, initializeDroppedAssetDataObject } from "../index.js";
+import { DroppedAsset, initializeDroppedAssetDataObject, standardizeError } from "../index.js";
 
 export const getDroppedAsset = async (credentials: Credentials) => {
   try {
@@ -18,6 +18,6 @@ export const getDroppedAsset = async (credentials: Credentials) => {
 
     return droppedAsset;
   } catch (error: any) {
-    return new Error(error);
+    return standardizeError(error);
   }
 };

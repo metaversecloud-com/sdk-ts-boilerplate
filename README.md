@@ -4,7 +4,7 @@ Please update the following in each of your SDK application.
 
 ## Introduction / Summary
 
-This boilerplate is meant to give you a simple starting point to build new features in Topia using our Javascript SDK. Please reference the [documentation](https://metaversecloud-com.github.io/mc-sdk-js/index.html) for a more detailed breakdown of what the SDK is capable of and how to use it!
+This template is meant to give you a simple starting point to build new features in Topia using our Javascript SDK. Please reference the [documentation](https://metaversecloud-com.github.io/mc-sdk-js/index.html) for a more detailed breakdown of what the SDK is capable of and how to use it!
 
 ## Key Features
 
@@ -33,17 +33,30 @@ _Does your app have special admin functionality? If so your key features may loo
 
 ### Data objects
 
-_We use data objects to store information about each implementation of the app per world._
+#### Visitor / User
+
+The data object attached to the visitor should store information related specifically to the visitor i.e. progress. For tracking across multiple world/instances use `${urlSlug}_${sceneDropId}` as a unique key. Example data:
+
+```ts
+{
+  [`${urlSlug}_${sceneDropId}`]: {
+    currentStreak: number,
+    lastCollectedDate: string,
+    longestStreak: number,
+    totalCollected: number,
+  }
+}
+```
 
 #### Key Asset
 
-The data object attached to the dropped key asset will store information related to this specific implementation of the app and would be deleted if the key asset is removed from world. Example data:
+The data object attached to the dropped key asset will should information related to this specific implementation of the app and would be deleted if the key asset is removed from world. Example data:
 
 ```ts
 {
   isResetInProgress: boolean;
-  lastInteraction: string; // ISO date string when the plot was claimed
-  lastPlayerTurn: string; // ISO date string when the plot was claimed
+  lastInteractionDate: string;
+  lastPlayerTurn: string;
   playerCount: number;
   resetCount: number;
   turnCount: number;
@@ -52,7 +65,7 @@ The data object attached to the dropped key asset will store information related
 
 #### World
 
-The data object attached to the world will store information for every instance of the app in a given world by keyAssetId or sceneDropId and will persist even if a specific instance is removed from world. Example data:
+The data object attached to the world will store information for every instance of the app in a given world by keyAssetId or sceneDropId and will persist even if a specific instance is removed from world. Data stored in the World data object should be minimal to avoid running into limits. Example data:
 
 ```ts
 {
@@ -72,13 +85,23 @@ The data object attached to the world will store information for every instance 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
-![SDK Styles](https://sdk-style.s3.amazonaws.com/example.html)
 ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 #### Server
 
 ![Node.js](https://img.shields.io/badge/node.js-%2343853D.svg?style=for-the-badge&logo=node.js&logoColor=white)
 ![Express](https://img.shields.io/badge/express-%23000000.svg?style=for-the-badge&logo=express&logoColor=white)
+
+### Styling Requirements
+
+This project uses the Topia SDK's CSS classes for consistent styling. Please follow these requirements:
+
+1. **Use SDK CSS classes** from https://sdk-style.s3.amazonaws.com/styles-3.0.2.css for all UI components.
+2. **Do not use Tailwind utilities** when an SDK class exists for that purpose.
+3. **Follow the examples** in `.ai/examples/styles.md` and `.ai/examples/page.md`.
+4. **Use the correct component structure** with proper aliased imports.
+
+See the comprehensive style guide in `.ai/style-guide.md` for complete requirements and examples.
 
 ### Getting Started
 
@@ -91,14 +114,13 @@ The data object attached to the world will store information for every instance 
 ### Add your .env environmental variables
 
 ```json
-API_KEY=xxxxxxxxxxxxx
 INSTANCE_DOMAIN=api.topia.io
 INSTANCE_PROTOCOL=https
 INTERACTIVE_KEY=xxxxxxxxxxxxx
 INTERACTIVE_SECRET=xxxxxxxxxxxxxx
 ```
 
-### Where to find API_KEY, INTERACTIVE_KEY and INTERACTIVE_SECRET
+### Where to find INTERACTIVE_KEY and INTERACTIVE_SECRET
 
 [Topia Dev Account Dashboard](https://dev.topia.io/t/dashboard/integrations)
 
